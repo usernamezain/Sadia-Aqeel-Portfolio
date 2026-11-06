@@ -1,0 +1,428 @@
+---
+/**
+ * WorkSection.astro
+ * Pinterest-Style Creative Gallery Section with Full-Screen Header,
+ * GSAP Scroll Scale-Down Entrance, Search, Category Filter, and Fixed Modal Preview.
+ */
+import '../styles/work.css';
+import { projects, projectCategories } from '../data/portfolio';
+---
+
+<section class="work-section" id="work" aria-label="Portfolio Showcase">
+  <div class="work-container">
+    
+    <!-- ─── 1. Full-Screen Centered Hero Header ──────────────── -->
+    <div class="work-hero-wrapper" id="work-hero-wrapper">
+      <!-- Multi-Layer Parallax Shapes & Clouds -->
+      <div class="work-hero-shapes" aria-hidden="true">
+        <!-- Layer 1: Back Cloud Blob 1 -->
+        <div class="work-cloud work-cloud-1" data-parallax-speed="0.2"></div>
+
+        <!-- Layer 2: Ring 1 (Top Left) -->
+        <svg class="work-shape-ring work-ring-1" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="90" stroke="#759D42" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <circle cx="100" cy="100" r="70" stroke="#37481A" stroke-width="0.75"/>
+        </svg>
+
+        <!-- Layer 2: Mid Cloud Blob 2 (Top Right) -->
+        <div class="work-cloud work-cloud-2" data-parallax-speed="0.45"></div>
+
+        <!-- Layer 4: Ring 2 (Top Right Double Stroke) -->
+        <svg class="work-shape-ring work-ring-2" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="150" cy="150" r="140" stroke="#37481A" stroke-width="1" opacity="0.6"/>
+          <circle cx="150" cy="150" r="120" stroke="#759D42" stroke-width="1.5" stroke-dasharray="4 8"/>
+        </svg>
+
+        <!-- Layer 4: Starburst Shape (Bottom Left) -->
+        <div class="work-shape-star">
+          <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <path d="M80 5 L88 55 L135 15 L95 62 L155 42 L98 72 L158 80 L98 88 L155 118 L95 98 L135 145 L88 105 L80 155 L72 105 L25 145 L65 98 L5 118 L62 88 L2 80 L62 72 L5 42 L65 62 L25 15 L72 55 Z"
+                  fill="#92D68A"/>
+          </svg>
+        </div>
+
+        <!-- Layer 5: Foreground Cloud Blob 3 (Bottom Right) -->
+        <div class="work-cloud work-cloud-3" data-parallax-speed="1.2"></div>
+      </div>
+
+      <header class="work-header">
+        <div class="work-header__top">
+          <span class="work-header__pill">
+            <span class="work-header__pill-dot"></span>
+            Selected Works &amp; Artifacts
+          </span>
+        </div>
+        <h1 class="work-header__title">
+          The Creative <em>Playground</em>
+        </h1>
+        <p class="work-header__subtitle">
+          An interactive collection of brand identities, packaging concepts, typography posters, and digital visual art.
+        </p>
+      </header>
+    </div>
+
+    <!-- ─── 2. Controls: Search & Category Filter ─────────────── -->
+    <div class="work-controls" id="work-controls">
+      <!-- Search input -->
+      <div class="work-search-wrapper">
+        <svg class="work-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          id="work-search-input"
+          class="work-search-input"
+          placeholder="Search projects by name, category, or keyword..."
+          aria-label="Search portfolio projects"
+        />
+        <button id="work-search-clear" class="work-search-clear" aria-label="Clear search">✕</button>
+      </div>
+
+      <!-- Category filter tabs -->
+      <div class="work-filters" role="tablist" aria-label="Filter project categories">
+        {projectCategories.map((cat, i) => (
+          <button
+            class={`work-filter-btn ${i === 0 ? 'is-active' : ''}`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-filter={cat}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <!-- Live count indicator -->
+      <div class="work-count-bar" id="work-count-bar">
+        Showing <span id="work-count-num">{projects.length}</span> of {projects.length} projects
+      </div>
+    </div>
+
+    <!-- ─── 3. Pinterest Masonry Grid ──────────────────────────── -->
+    <div class="work-masonry" id="work-masonry-grid">
+      {projects.map((project, idx) => (
+        <article
+          class="work-card"
+          data-category={project.category}
+          data-title={project.title.toLowerCase()}
+          data-tags={project.tags.join(' ').toLowerCase()}
+          data-id={project.id}
+          id={project.id}
+          data-idx={idx}
+        >
+          <div class="work-card__image-container">
+            <img
+              src={project.thumbnail}
+              alt={project.title}
+              class="work-card__img"
+              loading="lazy"
+              width="400"
+              height="500"
+            />
+            <div class="work-card__overlay">
+              <span class="work-card__top-badge">{project.category}</span>
+              <div class="work-card__info">
+                <h3 class="work-card__title">{project.title}</h3>
+                <div class="work-card__tags">
+                  {project.tags.map(tag => (
+                    <span class="work-card__tag">#{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- ─── 4. Lightbox Modal Preview (Fixed Center Lock) ────── -->
+  <div class="work-modal" id="work-modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="work-modal__content">
+      <button class="work-modal__close" id="work-modal-close" aria-label="Close project preview">✕</button>
+      <div class="work-modal__image-wrapper">
+        <img src="" alt="" id="modal-img" class="work-modal__image" />
+      </div>
+      <div class="work-modal__details">
+        <div>
+          <div class="work-modal__meta" id="modal-category">Category</div>
+          <h3 class="work-modal__title" id="modal-title">Project Title</h3>
+          <p class="work-modal__desc" id="modal-desc">Project Description</p>
+          
+          <div class="work-modal__info-grid">
+            <div>
+              <div class="work-modal__info-label">Client</div>
+              <div class="work-modal__info-val" id="modal-client">—</div>
+            </div>
+            <div>
+              <div class="work-modal__info-label">Year</div>
+              <div class="work-modal__info-val" id="modal-year">2024</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card__tags" id="modal-tags"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { projects } from '../data/portfolio';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const heroWrapper = document.getElementById('work-hero-wrapper');
+    const grid = document.getElementById('work-masonry-grid');
+    const cards = document.querySelectorAll('.work-card');
+    const filterBtns = document.querySelectorAll('.work-filter-btn');
+    const searchInput = document.getElementById('work-search-input') as HTMLInputElement;
+    const searchClear = document.getElementById('work-search-clear');
+    const countNum = document.getElementById('work-count-num');
+
+    // Modal elements
+    const modal = document.getElementById('work-modal');
+    const modalClose = document.getElementById('work-modal-close');
+    const modalImg = document.getElementById('modal-img') as HTMLImageElement;
+    const modalTitle = document.getElementById('modal-title');
+    const modalCategory = document.getElementById('modal-category');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalClient = document.getElementById('modal-client');
+    const modalYear = document.getElementById('modal-year');
+    const modalTags = document.getElementById('modal-tags');
+
+    if (!grid) return;
+
+    // ─── 1. GSAP Scroll Trigger for Multi-Layer Parallax Depth ───
+    if (heroWrapper) {
+      const cloud1 = heroWrapper.querySelector('.work-cloud-1');
+      const ring1 = heroWrapper.querySelector('.work-ring-1');
+      const cloud2 = heroWrapper.querySelector('.work-cloud-2');
+      const workHeader = heroWrapper.querySelector('.work-header');
+      const ring2 = heroWrapper.querySelector('.work-ring-2');
+      const starShape = heroWrapper.querySelector('.work-shape-star');
+      const cloud3 = heroWrapper.querySelector('.work-cloud-3');
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroWrapper,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+
+      // Layer 1 (z-index 1): Back Cloud 1 moves slow
+      if (cloud1) tl.to(cloud1, { y: -70, opacity: 0.2, ease: 'none' }, 0);
+      // Layer 2 (z-index 2): Ring 1 moves medium & rotates
+      if (ring1) tl.to(ring1, { y: -160, rotation: 50, opacity: 0.1, ease: 'none' }, 0);
+      // Layer 2 (z-index 2): Mid Cloud 2 moves medium
+      if (cloud2) tl.to(cloud2, { y: -140, opacity: 0.2, ease: 'none' }, 0);
+      // Layer 3 (z-index 3): Header title scales down & moves
+      if (workHeader) tl.to(workHeader, { scale: 0.72, y: -90, opacity: 0.25, ease: 'none' }, 0);
+      // Layer 4 (z-index 4): Ring 2 moves faster & rotates opposite
+      if (ring2) tl.to(ring2, { y: -240, rotation: -80, opacity: 0.1, ease: 'none' }, 0);
+      // Layer 4 (z-index 4): Starburst expands & flies up
+      if (starShape) tl.to(starShape, { y: -310, scale: 1.35, rotation: 45, opacity: 0.1, ease: 'none' }, 0);
+      // Layer 5 (z-index 5): Foreground Cloud 3 moves fastest
+      if (cloud3) tl.to(cloud3, { y: -390, opacity: 0.1, ease: 'none' }, 0);
+    }
+
+    let activeFilter = 'All';
+    let searchQuery = '';
+
+    // ─── 2. Automatic Scroll Entrance Animation (Slide Up) ───
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          const card = entry.target as HTMLElement;
+          setTimeout(() => {
+            card.classList.add('is-visible');
+          }, (i % 4) * 70);
+          observer.unobserve(card);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -50px 0px',
+      threshold: 0.08
+    });
+
+    cards.forEach(card => observer.observe(card));
+
+    // ─── 3. Real-Time Search & Category Filtering ─────────────
+    function updateGrid() {
+      let visibleCount = 0;
+
+      cards.forEach((cardNode) => {
+        const card = cardNode as HTMLElement;
+        const category = card.getAttribute('data-category') || '';
+        const title = card.getAttribute('data-title') || '';
+        const tags = card.getAttribute('data-tags') || '';
+
+        const matchesCategory = (activeFilter === 'All' || category.toLowerCase() === activeFilter.toLowerCase());
+        const matchesSearch = !searchQuery || title.includes(searchQuery) || category.toLowerCase().includes(searchQuery) || tags.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = '';
+          requestAnimationFrame(() => {
+            card.classList.add('is-visible');
+          });
+          visibleCount++;
+        } else {
+          card.classList.remove('is-visible');
+          card.style.display = 'none';
+        }
+      });
+
+      if (countNum) {
+        countNum.textContent = String(visibleCount);
+      }
+    }
+
+    // Filter button clicks
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+
+        activeFilter = btn.getAttribute('data-filter') || 'All';
+        updateGrid();
+      });
+    });
+
+    // Search input
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+        if (searchClear) {
+          searchClear.classList.toggle('is-visible', searchQuery.length > 0);
+        }
+        updateGrid();
+      });
+    }
+
+    // Search clear
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        searchQuery = '';
+        searchClear.classList.remove('is-visible');
+        updateGrid();
+      });
+    }
+
+    // Teleport modal to document.body so it is never trapped inside parent transforms or z-index stacking
+    if (modal && modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
+
+    // ─── 4. Lightbox Modal (Strict Fixed Center & Scroll Lock) ─
+    function openModalById(id: string) {
+      if (!id) return;
+      const cleanId = id.replace(/^#/, '');
+      const proj = projects.find(p => p.id === cleanId);
+      if (!proj || !modal) return;
+
+      if (modalImg) {
+        modalImg.src = proj.thumbnail;
+        modalImg.alt = proj.title;
+      }
+      if (modalTitle) modalTitle.textContent = proj.title;
+      if (modalCategory) modalCategory.textContent = proj.category;
+      if (modalDesc) modalDesc.textContent = proj.description;
+      if (modalClient) modalClient.textContent = proj.client || 'Client Project';
+      if (modalYear) modalYear.textContent = String(proj.year);
+
+      if (modalTags) {
+        modalTags.innerHTML = proj.tags.map(t => `<span class="work-card__tag">#${t}</span>`).join('');
+      }
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+
+      // Scroll background card into view smoothly
+      const targetCard = document.getElementById(cleanId);
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      // Lock background scroll strictly
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+
+      // @ts-ignore
+      if (window.lenis) window.lenis.stop();
+    }
+
+    // Expose openWorkModal globally so Dock can invoke it directly
+    (window as any).openWorkModal = openModalById;
+
+    // Open modal on card click in the grid
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        if (id) {
+          history.pushState(null, '', `#${id}`);
+          openModalById(id);
+        }
+      });
+    });
+
+    const closeModal = () => {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+
+      // Unlock background scroll
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+
+      // Clear the hash from the URL without triggering a page jump
+      if (window.location.hash) {
+        history.pushState('', document.title, window.location.pathname + window.location.search);
+      }
+
+      // @ts-ignore
+      if (window.lenis) window.lenis.start();
+    };
+
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal?.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+
+    // ─── 5. Handle URL Hash on Page Load & Hash Change ─────────
+    const checkHashAndOpen = () => {
+      if (window.location.hash) {
+        const hashId = window.location.hash.replace(/^#/, '');
+        if (hashId) {
+          setTimeout(() => {
+            openModalById(hashId);
+          }, 120);
+        }
+      }
+    };
+
+    checkHashAndOpen();
+    window.addEventListener('hashchange', checkHashAndOpen);
+    document.addEventListener('astro:page-load', checkHashAndOpen);
+  });
+</script>

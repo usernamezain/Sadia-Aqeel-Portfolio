@@ -1,0 +1,11 @@
+# Sadia Aqeel — Graphic Designer Portfolio
+# https://sadiaaqeel.com
+
+User-agent: *
+Allow: /
+
+Sitemap: https://sadiaaqeel.com/sitemap-index.xml
+
+# Block admin/draft paths
+Disallow: /admin/
+Disallow: /draft/

@@ -1,0 +1,69 @@
+---
+/**
+ * Homepage — Sadia Aqeel Portfolio
+ * Hero section: warm, organic, editorial design with aurora gradients.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroMarimba from '../components/HeroMarimba.astro';
+import Practice from '../components/Practice.astro';
+import Process from '../components/Process.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/hero.css';
+---
+
+<BaseLayout 
+  title="Sadia Aqeel — Graphic Designer & Visual Brand Identity Specialist" 
+  description="Sadia Aqeel is a professional graphic designer specializing in bold brand identities, social media campaigns, business posters, packaging, editorial book covers, and UI/UX design. Available worldwide."
+>
+  <div class="page-hero" id="top">
+    <HeroMarimba />
+  </div>
+
+  <Practice />
+  <Process />
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  /* ─── Override dark theme for hero page ────────────────── */
+  .page-hero {
+    background-color: #F0EFEA;
+    color: #37481A;
+  }
+
+  /* Hide the dark-theme noise overlay on hero page */
+  .page-hero .noise::before {
+    display: none;
+  }
+
+  /* Override body bg for this page */
+  body:has(.page-hero) {
+    background-color: #F0EFEA;
+  }
+
+  /* Hide the dark-themed Navbar on hero page (we use our own header) */
+  .page-hero ~ .navbar,
+  #navbar {
+    display: none;
+  }
+
+  /* Override the dark-themed main animation */
+  body:has(.page-hero) main {
+    animation: none;
+  }
+
+  /* Override scrollbar for light theme */
+  body:has(.page-hero)::-webkit-scrollbar-track {
+    background: #F0EFEA;
+  }
+
+  body:has(.page-hero)::-webkit-scrollbar-thumb {
+    background: #37481A;
+  }
+
+  /* Override selection for warm theme */
+  body:has(.page-hero) ::selection {
+    background: #37481A;
+    color: #F0EFEA;
+  }
+</style>

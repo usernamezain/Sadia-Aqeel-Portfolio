@@ -1,0 +1,544 @@
+---
+/**
+ * ServicesSwatches.astro — Sadia Aqeel Portfolio
+ * Interactive design swatches system based on services-swatches.html.
+ * Five to six paint-chip swatches that unfold smoothly on hover/focus,
+ * displaying real high-resolution mockup images with cursor-driven 
+ * inertial parallax, warp displacement, and RGB-split bending effect.
+ */
+
+export interface ServiceItem {
+  num: string;
+  title: string;
+  desc: string;
+  image: string;
+  imageAlt: string;
+  tag?: string;
+  weeks?: string;
+  deliverables?: string[];
+  icon?: string;
+}
+
+interface Props {
+  services: ServiceItem[];
+}
+
+const { services } = Astro.props;
+
+// Rich paint-chip color themes mapped to editorial palette
+const panelColors = [
+  { bg: "#2b4a1f", fg: "#ffffff" }, // Deep Forest
+  { bg: "#c8794d", fg: "#ffffff" }, // Warm Terracotta
+  { bg: "#5f7e45", fg: "#ffffff" }, // Olive Sage
+  { bg: "#b58750", fg: "#ffffff" }, // Warm Ochre
+  { bg: "#1d2a17", fg: "#ffffff" }, // Deep Organic Dark
+  { bg: "#3e5b28", fg: "#ffffff" }, // Moss Green
+];
+
+function getShortTitle(title: string): string {
+  if (title.includes('&')) {
+    return title.split('&')[0].trim();
+  }
+  return title;
+}
+---
+
+<!-- Hidden SVG Filter for Real-time Inertial Warp & RGB Chromatic Aberration -->
+<svg width="0" height="0" class="sr-only" style="position: absolute; pointer-events: none;" aria-hidden="true">
+  <defs>
+    <filter id="swatch-bend" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.005 0.009" numOctaves="1" seed="4" result="n" />
+      <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="d" />
+      <feColorMatrix in="d" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r" />
+      <feColorMatrix in="d" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g" />
+      <feColorMatrix in="d" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b" />
+      <feOffset id="ro" in="r" dx="0" dy="0" result="r2" />
+      <feOffset id="bo" in="b" dx="0" dy="0" result="b2" />
+      <feBlend in="r2" in2="g" mode="screen" result="rg" />
+      <feBlend in="rg" in2="b2" mode="screen" />
+    </filter>
+  </defs>
+</svg>
+
+<section class="services-swatches-section" id="services-showcase" aria-label="Services Swatches Showcase">
+  
+  <!-- Subtle Editorial Subheader (No hover hint text) -->
+  <div class="swatches-header">
+    <div class="swatches-header__left">
+      <span class="swatches-badge">Core Capabilities</span>
+      <span class="swatches-count">0{services.length} Design Disciplines</span>
+    </div>
+  </div>
+
+  <!-- The Swatch Deck Container -->
+  <div class="deck" id="services-deck">
+    {services.map((service, index) => {
+      const colors = panelColors[index % panelColors.length];
+      const shortTitle = getShortTitle(service.title);
+      return (
+        <a 
+          class={`panel ${index === 0 ? 'open' : ''}`}
+          data-i={index}
+          href={`/contact?service=${encodeURIComponent(service.title)}`}
+          aria-label={`${service.title} — ${service.desc}`}
+          style={`--bg: ${colors.bg}; --fg: ${colors.fg};`}
+        >
+          <!-- Slim State: Number & Vertical Title running up strip -->
+          <span class="n">{service.num}</span>
+          <span class="vt">{shortTitle}</span>
+
+          <!-- Open State: High-Resolution Mockup with Inertial Bend & Parallax -->
+          <div class="art" aria-hidden="true">
+            <img 
+              src={service.image} 
+              alt={service.imageAlt}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              class="swatch-img"
+            />
+          </div>
+
+          <!-- Ambient Scrim Gradient for Legibility -->
+          <div class="scrim" aria-hidden="true"></div>
+
+          <!-- Open State: Info Details & CTA -->
+          <div class="info">
+            <h2 class="ht">{service.title}</h2>
+            <div class="foot">
+              <p>{service.desc}</p>
+              <div class="tags">
+                {service.weeks && (
+                  <span class="swatch-pill">{service.weeks}</span>
+                )}
+                <span class="swatch-pill">{service.tag || "Tailored"}</span>
+                <span class="go" aria-hidden="true">↗</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  :root {
+    --ease-swatch: cubic-bezier(0.7, 0, 0.2, 1);
+  }
+
+  .services-swatches-section {
+    position: relative;
+    width: 100%;
+    margin-bottom: clamp(4rem, 8vw, 8rem);
+  }
+
+  /* ─── Editorial Subheader ────────────────────────────────── */
+  .swatches-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(55, 72, 26, 0.18);
+    margin-bottom: 1.75rem;
+  }
+
+  .swatches-header__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .swatches-badge {
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #37481A;
+    background: rgba(55, 72, 26, 0.08);
+    padding: 0.28rem 0.85rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(55, 72, 26, 0.14);
+  }
+
+  .swatches-count {
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(55, 72, 26, 0.65);
+  }
+
+  /* ─── The Deck ───────────────────────────────────────────── */
+  .deck {
+    display: flex;
+    gap: 12px;
+    height: clamp(520px, 74vh, 640px);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .panel {
+    --bg: #2b4a1f;
+    --fg: #ffffff;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    border-radius: 26px;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--fg);
+    text-decoration: none;
+    transition: flex 0.8s var(--ease-swatch);
+    isolation: isolate;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 12px 32px -8px rgba(29, 42, 23, 0.18);
+  }
+
+  .panel.open {
+    flex: 5.4;
+  }
+
+  .panel:focus-visible {
+    outline: 3px solid #759D42;
+    outline-offset: 3px;
+  }
+
+  /* ─── Slim State: Number & Vertical Title ────────────────── */
+  .n {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    z-index: 3;
+    transition: opacity 0.3s;
+    color: var(--fg);
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  .vt {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    writing-mode: vertical-rl;
+    transform: translateX(-50%) rotate(180deg);
+    white-space: nowrap;
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+    letter-spacing: -0.015em;
+    z-index: 3;
+    transition: opacity 0.35s ease;
+    color: var(--fg);
+    pointer-events: none;
+  }
+
+  .panel.open .vt {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ─── Open State: Art & Warp Mesh ────────────────────────── */
+  .art {
+    position: absolute;
+    inset: -6%;
+    width: 112%;
+    height: 112%;
+    opacity: 0;
+    transition: opacity 0.6s 0.15s;
+    z-index: 1;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .swatch-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .panel.open .art {
+    opacity: 1;
+  }
+
+  /* Scrim Gradient for Contrast */
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.5s 0.2s;
+    background: linear-gradient(180deg, rgba(15, 25, 10, 0) 30%, rgba(15, 25, 10, 0.88) 90%);
+    pointer-events: none;
+  }
+
+  .panel.open .scrim {
+    opacity: 1;
+  }
+
+  /* Info Details Overlay */
+  .info {
+    position: absolute;
+    left: clamp(20px, 3.5vw, 36px);
+    right: clamp(20px, 3.5vw, 36px);
+    bottom: clamp(20px, 3.5vw, 32px);
+    z-index: 4;
+    color: #ffffff;
+    display: grid;
+    gap: 14px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s, transform 0.5s var(--ease-swatch);
+    pointer-events: none;
+  }
+
+  .panel.open .info {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.35s;
+    pointer-events: auto;
+  }
+
+  .ht {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3.2vw, 2.9rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    max-width: 18ch;
+    text-wrap: balance;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .foot p {
+    max-width: 44ch;
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0;
+  }
+
+  .tags {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .swatch-pill {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+  }
+
+  .go {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #2b4a1f;
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    transition: transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+  }
+
+  .panel:hover .go {
+    transform: rotate(45deg);
+  }
+
+  /* ─── Fully Mobile Responsive ────────────────────────────── */
+  @media (max-width: 860px) {
+    .deck {
+      flex-direction: column;
+      height: auto;
+      gap: 10px;
+    }
+
+    .panel {
+      flex: none;
+      height: 76px;
+      transition: height 0.7s var(--ease-swatch);
+    }
+
+    .panel.open {
+      height: 440px;
+      flex: none;
+    }
+
+    .n {
+      top: 50%;
+      left: 22px;
+      right: auto;
+      transform: translateY(-50%);
+      text-align: left;
+    }
+
+    .vt {
+      writing-mode: horizontal-tb;
+      transform: translateY(50%);
+      left: 64px;
+      bottom: 50%;
+      font-size: 1.35rem;
+    }
+
+    .info {
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      gap: 10px;
+    }
+
+    .ht {
+      font-size: 1.7rem;
+    }
+
+    .foot p {
+      font-size: 0.88rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const deck = document.getElementById('services-deck');
+    if (!deck) return;
+
+    const panels = Array.from(deck.querySelectorAll<HTMLElement>('.panel'));
+    const disp = document.getElementById('disp');
+    const ro = document.getElementById('ro');
+    const bo = document.getElementById('bo');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let openPanel: HTMLElement | null = panels[0] || null;
+    let vx = 0;
+    let vy = 0;
+    let lx = 0;
+    let ly = 0;
+    let px = 0;
+    let py = 0;
+    let tx = 0;
+    let ty = 0;
+    let raf = 0;
+    let inside = false;
+
+    function setOpen(panel: HTMLElement) {
+      if (openPanel === panel) return;
+
+      if (openPanel) {
+        openPanel.classList.remove('open');
+        const oldArt = openPanel.querySelector<HTMLElement>('.art');
+        if (oldArt) {
+          oldArt.style.transform = '';
+          oldArt.style.filter = '';
+        }
+      }
+
+      openPanel = panel;
+      panel.classList.add('open');
+      panels.forEach(p => p.setAttribute('aria-expanded', (p === panel).toString()));
+      start();
+    }
+
+    function start() {
+      if (!raf) {
+        raf = requestAnimationFrame(loop);
+      }
+    }
+
+    function loop() {
+      raf = 0;
+      if (!openPanel) return;
+
+      const art = openPanel.querySelector<HTMLElement>('.art');
+      vx *= 0.88; // velocity decay for smooth settling
+      vy *= 0.88;
+      px += (tx - px) * 0.1; // eased parallax
+      py += (ty - py) * 0.1;
+
+      const speed = Math.min(1, Math.hypot(vx, vy) / 26);
+
+      if (!reduce && art) {
+        art.style.transform = `translate3d(${px}px, ${py}px, 0) skew(${(vx * 0.06).toFixed(2)}deg, ${(vy * 0.04).toFixed(2)}deg)`;
+
+        if (speed > 0.03 && disp && ro && bo) {
+          disp.setAttribute('scale', (speed * 46).toFixed(1));
+          ro.setAttribute('dx', Math.max(-9, Math.min(9, -vx * 0.35)).toFixed(1));
+          bo.setAttribute('dx', Math.max(-9, Math.min(9, vx * 0.35)).toFixed(1));
+          art.style.filter = 'url(#swatch-bend)';
+        } else {
+          art.style.filter = 'none'; // Zero GPU filter cost when still
+        }
+      }
+
+      if (inside || speed > 0.03 || Math.abs(tx - px) > 0.2) {
+        raf = requestAnimationFrame(loop);
+      }
+    }
+
+    panels.forEach(p => {
+      p.addEventListener('pointerenter', () => setOpen(p));
+      p.addEventListener('focus', () => setOpen(p));
+
+      p.addEventListener('pointermove', (e) => {
+        if (p !== openPanel) return;
+        vx = vx * 0.6 + (e.clientX - lx) * 0.4;
+        vy = vy * 0.6 + (e.clientY - ly) * 0.4;
+        lx = e.clientX;
+        ly = e.clientY;
+
+        const r = p.getBoundingClientRect();
+        tx = -((e.clientX - r.left) / r.width - 0.5) * 28;
+        ty = -((e.clientY - r.top) / r.height - 0.5) * 20;
+        inside = true;
+        start();
+      });
+
+      p.addEventListener('pointerleave', () => {
+        inside = false;
+        tx = 0;
+        ty = 0;
+        start();
+      });
+    });
+
+    if (panels.length > 0) {
+      setOpen(panels[0]);
+    }
+  });
+</script>

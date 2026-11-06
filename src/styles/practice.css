@@ -1,0 +1,355 @@
+/* practice.css */
+
+.practice-section {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #F0EFEA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #37481A;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.practice-scroll-spacer {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.practice-container {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* The SVG rings paths (Desktop) */
+.practice-circle-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(135vw, 130vh, 1900px);
+  height: min(135vw, 130vh, 1900px);
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Background travel lines (Desktop) */
+.practice-travel-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100dvh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.practice-travel-line {
+  stroke: #37481A;
+  stroke-width: 8px;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none;
+  opacity: 0.85;
+}
+
+.practice-travel-dot {
+  fill: #37481A;
+  transform-origin: center;
+}
+
+.practice-arc {
+  stroke: rgba(55, 72, 26, 0.4);
+}
+
+.arc-center-dashed {
+  stroke: rgba(55, 72, 26, 0.55);
+  stroke-dasharray: 8 8;
+  transform-origin: 600px 600px;
+}
+
+/* Mask to keep blobs aligned with the inner circle (Desktop) */
+.inner-circle-mask {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(min(96vw, 94vh, 1400px) * 0.78);
+  height: calc(min(96vw, 94vh, 1400px) * 0.78);
+  border-radius: 50%;
+  z-index: 2;
+  overflow: visible;
+}
+
+/* Center Text (Desktop) */
+.practice-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  width: 90%;
+  max-width: 520px;
+  pointer-events: none;
+}
+
+.practice-center-text h2 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(3rem, 8.5vw, 6rem);
+  font-weight: 400;
+  line-height: 1.02;
+  color: #37481A;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* Blobs (Desktop) */
+.practice-blob {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: clamp(170px, 29vw, 320px);
+  height: clamp(170px, 29vw, 320px);
+  border-radius: 50%;
+  z-index: 5;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.blob-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  filter: blur(clamp(25px, 4vw, 45px));
+  opacity: 0.85;
+  z-index: -1;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.blob-text {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(1.2rem, 2.6vw, 2.1rem);
+  color: #fff;
+  text-align: center;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  padding: 0 10px;
+}
+
+/* Blob specific placements and colors (Desktop) — pushed outward to prevent overlap */
+.blob-1 {
+  top: -25px;
+  right: -25px;
+}
+.blob-1 .blob-bg {
+  background: radial-gradient(circle, #A8E6C8 0%, #92D68A 100%);
+}
+
+.blob-2 {
+  bottom: -25px;
+  right: -25px;
+}
+.blob-2 .blob-bg {
+  background: radial-gradient(circle, #F8B195 0%, #F67280 100%);
+}
+
+.blob-3 {
+  top: -25px;
+  left: -25px;
+}
+.blob-3 .blob-bg {
+  background: radial-gradient(circle, #B5DDF0 0%, #D5B8E0 100%);
+}
+
+.blob-4 {
+  bottom: -25px;
+  left: -25px;
+}
+.blob-4 .blob-bg {
+  background: radial-gradient(circle, #FDE68A 0%, #F59E0B 100%);
+}
+
+/* ---------- MOBILE SCENE (Spine Timeline) ---------- */
+.mobile-scene {
+  display: none;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.m-head {
+  text-align: center;
+  padding: 36px 20px 12px;
+  background: transparent;
+}
+
+.m-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #37481A;
+  font-size: clamp(2.2rem, 7.5vw, 3rem);
+  line-height: 1.2;
+  opacity: 0;
+  margin: 0;
+}
+
+.m-sub {
+  font-family: 'Instrument Sans', system-ui, sans-serif;
+  font-size: 13px;
+  color: rgba(55, 72, 26, 0.65);
+  margin-top: 8px;
+  opacity: 0;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+
+.timeline {
+  position: relative;
+  background: transparent;
+  padding: 20px 24px 70px;
+}
+
+.spine-svg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 60px;
+  width: 40px;
+  height: calc(100% - 60px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.spine-svg path {
+  fill: none;
+  stroke: #37481A;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+
+.node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 64px 0;
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.node .blob-card {
+  width: clamp(175px, 50vw, 220px);
+  height: clamp(175px, 50vw, 220px);
+  border-radius: 50%;
+  filter: blur(28px);
+  position: relative;
+}
+
+.node .txt {
+  position: absolute;
+  text-align: center;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(22px, 6vw, 28px);
+  font-weight: 500;
+  color: #37481A;
+  line-height: 1.2;
+  width: clamp(140px, 42vw, 180px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.spine-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.node.blue .blob-card {
+  background: radial-gradient(circle, #B5DDF0 0%, transparent 72%);
+}
+
+.node.green .blob-card {
+  background: radial-gradient(circle, #A8E6C8 0%, transparent 72%);
+}
+
+.node.yellow .blob-card {
+  background: radial-gradient(circle, #FDE68A 0%, transparent 72%);
+}
+
+.node.coral .blob-card {
+  background: radial-gradient(circle, #F8B195 0%, transparent 72%);
+}
+
+.m-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #37481A;
+  margin: 0 auto 8px;
+  opacity: 0;
+}
+
+/* Mobile Overrides (below 768px) */
+@media (max-width: 768px) {
+  .practice-section {
+    height: auto !important;
+    min-height: auto !important;
+    padding: 20px 0 40px !important;
+    overflow: visible !important;
+  }
+
+  .practice-container {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .practice-scroll-spacer {
+    display: none !important;
+    height: 0 !important;
+  }
+
+  .practice-circle-svg,
+  .practice-travel-svg,
+  .practice-center-text,
+  .inner-circle-mask {
+    display: none !important;
+  }
+
+  .mobile-scene {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-scene {
+    display: none !important;
+  }
+}

@@ -1,0 +1,327 @@
+---
+/**
+ * About Page — marimba. designs
+ * Personal story, experience, stats, and personal interests.
+ * Matches marimba.designs/about with scrubbed GSAP animations & Lenis JS.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/hero.css';
+import '../styles/about.css';
+---
+
+<BaseLayout 
+  title="About Sadia Aqeel — Graphic Designer & Visual Storyteller" 
+  description="Discover the story and design journey behind Sadia Aqeel, lead graphic designer behind Sadia Creative Studio. Delivering bold brand identities, social media campaigns, packaging, and digital designs for global clients."
+>
+  <!-- Background Grid Lines -->
+  <div class="hero-gridlines" aria-hidden="true"></div>
+
+  <div class="about-page-wrapper">
+    <!-- Header row -->
+    <header class="about-header">
+      <a href="/" class="about-logo" aria-label="Sadia Aqeel — Home">
+        Sadia<span class="about-logo__sub">Aqeel</span>
+      </a>
+
+      <div class="about-meta">
+        <span class="about-meta__item">Graphic & Visual Designer</span>
+        <span class="about-meta__item">Available worldwide</span>
+      </div>
+    </header>
+
+    <!-- ─── Section 1: Main Display Headline ───────────────────── -->
+    <section class="about-hero-section" id="about-hero">
+      <h1 class="about-hero__headline scrub-title">
+        The story behind<br>Sadia Aqeel
+      </h1>
+    </section>
+
+    <!-- ─── Section 2: Designer Bio (Hey, I'm Sadia) ───────────── -->
+    <section class="about-bio-section" id="about-bio">
+      <!-- Left side: Portrait with decorative shapes -->
+      <div class="about-bio__visual">
+        <div class="bio-shape-ring" data-parallax="-0.2"></div>
+        <div class="bio-shape-starburst" data-parallax="0.25">
+          <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <path d="M90 5 L98 60 L140 15 L105 68 L165 45 L110 78 L175 90 L110 102 L165 135 L105 112 L140 165 L98 120 L90 175 L82 120 L40 165 L75 112 L15 135 L70 102 L5 90 L70 78 L15 45 L75 68 L40 15 L82 60 Z"
+                  fill="#B5DDF0" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="bio-portrait-card" data-parallax="0.1">
+          <img
+            src="/assets/portfolio/brand-identity-showcase-1.png"
+            alt="Sadia Aqeel — Graphic Designer & Visual Storyteller"
+            width="380"
+            height="475"
+            loading="eager"
+          />
+        </div>
+      </div>
+
+      <!-- Right side: Bio details -->
+      <div class="about-bio__text scrub-bio-text">
+        <h2 class="bio-title">Hey, I'm Sadia</h2>
+        <p class="bio-description">
+          I’m a graphic designer who turns ideas into visuals that speak, connect, and inspire. For me, design isn’t just about making things look good — it’s about telling stories through color, typography, composition, and creativity.
+        </p>
+        <p class="bio-description">
+          From bold brand identities to eye-catching social media graphics and thoughtful digital designs, I love experimenting with ideas and transforming them into visuals with personality.
+        </p>
+        <p class="bio-tagline">
+          Every great design starts with a simple idea and a creative mind.
+        </p>
+        <p class="bio-location">
+          Sadia Creative Studio — Available Worldwide
+        </p>
+      </div>
+    </section>
+
+    <!-- ─── Section 3: Key Stats ───────────────────────────────── -->
+    <section class="about-stats-section" id="about-stats">
+      <div class="stat-item scrub-stat">
+        <span class="stat-number">180+</span>
+        <span class="stat-label">design projects delivered</span>
+      </div>
+      <div class="stat-item scrub-stat">
+        <span class="stat-number">65+</span>
+        <span class="stat-label">happy global clients</span>
+      </div>
+    </section>
+
+    <!-- ─── Section 4: Work Experience ─────────────────────────── -->
+    <section class="about-experience-section" id="about-experience">
+      <h2 class="experience-title scrub-exp-title">Core Expertise</h2>
+      
+      <div class="experience-grid">
+        <!-- Left Column -->
+        <div class="experience-col scrub-exp-left">
+          <div class="exp-role-card">
+            <h3 class="exp-role-title">Social Media & Campaign Posts</h3>
+            <span class="exp-role-meta">Instagram Feed • Carousels • Product Launch Ads</span>
+          </div>
+
+          <div class="exp-role-card">
+            <h3 class="exp-role-title">Business Posters & Flyers</h3>
+            <span class="exp-role-meta">Food & Retail Posters • Event Banners • Commercial Flyers</span>
+          </div>
+
+          <div class="exp-role-card">
+            <h3 class="exp-role-title">Logo Designs & Brand Identity</h3>
+            <span class="exp-role-meta">Brand Systems • Stationery • Visual Guidelines</span>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="experience-col scrub-exp-right">
+          <div class="exp-role-card">
+            <h3 class="exp-role-title">Book Cover Pages & Editorial</h3>
+            <span class="exp-role-meta">Children Books • Novel Cover Jackets • Print Spreads</span>
+          </div>
+
+          <div class="exp-role-card">
+            <h3 class="exp-role-title">UI/UX & Figma Interfaces</h3>
+            <span class="exp-role-meta">Landing Pages • Mobile SaaS Apps • Product Cards</span>
+          </div>
+
+          <div class="exp-role-card">
+            <h3 class="exp-role-title">Custom Typography & Art</h3>
+            <span class="exp-role-meta">3D Lettering • Neon Gradients • Monogram Art</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Section 5: Design Philosophy ──────────────────────── -->
+    <section class="about-interests-section" id="about-interests">
+      <h2 class="interests-title scrub-interest-title">Creative Philosophy</h2>
+
+      <ul class="interests-list scrub-interests-list">
+        <li class="interest-item">Visuals that speak, connect, and inspire.</li>
+        <li class="interest-item">Storytelling through color, typography, composition, and layout.</li>
+        <li class="interest-item">Transforming abstract concepts into visuals with distinct personality.</li>
+        <li class="interest-item">Constantly learning and exploring new design frontiers.</li>
+        <li class="interest-item">Attention to detail from pixel to print output.</li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initAboutScrubAnimations() {
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced) return;
+
+    // 1. Scrubbed Headline Animation (Bound to scrollbar)
+    const heroHeadline = document.querySelector('.scrub-title');
+    if (heroHeadline) {
+      gsap.fromTo(
+        heroHeadline,
+        { opacity: 0.15, y: 60, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: heroHeadline,
+            start: 'top 85%',
+            end: 'top 25%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    // 2. Parallax elements on scroll scrub
+    document.querySelectorAll('[data-parallax]').forEach((el) => {
+      const speed = parseFloat(el.getAttribute('data-parallax') || '0.2');
+      gsap.to(el, {
+        yPercent: speed * 100,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: el.parentElement || el,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        }
+      });
+    });
+
+    // 3. Bio text scrubbed reveal
+    const bioText = document.querySelector('.scrub-bio-text');
+    if (bioText) {
+      gsap.fromTo(
+        bioText.children,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: bioText,
+            start: 'top 85%',
+            end: 'top 40%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    // 4. Stats scrubbed animation
+    const stats = document.querySelectorAll('.scrub-stat');
+    if (stats.length) {
+      gsap.fromTo(
+        stats,
+        { opacity: 0, y: 50, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.15,
+          ease: 'back.out(1.5)',
+          scrollTrigger: {
+            trigger: '#about-stats',
+            start: 'top 85%',
+            end: 'top 45%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    // 5. Work Experience scrubbed grid
+    const expTitle = document.querySelector('.scrub-exp-title');
+    if (expTitle) {
+      gsap.fromTo(
+        expTitle,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: expTitle,
+            start: 'top 90%',
+            end: 'top 60%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    const expLeftCards = document.querySelectorAll('.scrub-exp-left .exp-role-card');
+    const expRightCards = document.querySelectorAll('.scrub-exp-right .exp-role-card');
+
+    if (expLeftCards.length) {
+      gsap.fromTo(
+        expLeftCards,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          stagger: 0.12,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.scrub-exp-left',
+            start: 'top 85%',
+            end: 'bottom 60%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    if (expRightCards.length) {
+      gsap.fromTo(
+        expRightCards,
+        { opacity: 0, x: 30 },
+        {
+          opacity: 1,
+          x: 0,
+          stagger: 0.12,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.scrub-exp-right',
+            start: 'top 85%',
+            end: 'bottom 60%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+
+    // 6. Personal Interests list scrubbed reveal
+    const interestItems = document.querySelectorAll('.scrub-interests-list .interest-item');
+    if (interestItems.length) {
+      gsap.fromTo(
+        interestItems,
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '#about-interests',
+            start: 'top 85%',
+            end: 'bottom 65%',
+            scrub: 1,
+          }
+        }
+      );
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAboutScrubAnimations);
+  } else {
+    initAboutScrubAnimations();
+  }
+  document.addEventListener('astro:page-load', initAboutScrubAnimations);
+</script>

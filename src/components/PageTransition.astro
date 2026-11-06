@@ -1,0 +1,237 @@
+---
+/**
+ * PageTransition.astro
+ * 3-Panel Green Gradient Wipe Page Transition (Left, Right, Bottom -> Top)
+ * Smooth hardware-accelerated wipe without text overlay.
+ */
+---
+
+<!-- ─── Page Transition Overlay ────────────────────────────── -->
+<div id="page-transition-overlay" class="page-transition-overlay" aria-hidden="true">
+  <!-- Panel 1: Left Box (Light Mint-Green Gradient) -->
+  <div class="transition-box box-left"></div>
+
+  <!-- Panel 2: Right Box (Vibrant Medium Green Gradient) -->
+  <div class="transition-box box-right"></div>
+
+  <!-- Panel 3: Bottom Box (Hard Dark Olive Green Gradient) -->
+  <div class="transition-box box-bottom"></div>
+</div>
+
+<style>
+  .page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 99999;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .transition-box {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Panel 1: Left Box */
+  .box-left {
+    background: linear-gradient(135deg, #C5EAD0 0%, #92D68A 100%);
+    transform: translateX(-100%);
+    z-index: 1;
+  }
+
+  /* Panel 2: Right Box */
+  .box-right {
+    background: linear-gradient(135deg, #92D68A 0%, #4F5F2E 100%);
+    transform: translateX(100%);
+    z-index: 2;
+  }
+
+  /* Panel 3: Bottom Box */
+  .box-bottom {
+    background: linear-gradient(135deg, #37481A 0%, #172408 100%);
+    transform: translateY(100%);
+    z-index: 3;
+    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.3);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  let isNavigating = false;
+
+  /**
+   * Character-by-Character reveal animation for elements on the new page.
+   */
+  function triggerPageCharacterReveals() {
+    const targets = document.querySelectorAll('.page-hero .hero-title, [data-text-reveal], .about-hero__headline, .bio-title, h1.split-chars-page');
+    
+    targets.forEach((el) => {
+      const textEl = el as HTMLElement;
+      if (textEl.getAttribute('data-page-reveal-done')) return;
+      textEl.setAttribute('data-page-reveal-done', 'true');
+
+      const nodes = Array.from(textEl.childNodes);
+      const newNodes: Node[] = [];
+
+      nodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const text = node.textContent || '';
+          const frag = document.createDocumentFragment();
+          text.split('').forEach(char => {
+            const span = document.createElement('span');
+            span.className = 'page-char-anim';
+            span.style.display = 'inline-block';
+            span.style.opacity = '0';
+            span.style.transform = 'translateY(36px) rotate(3deg)';
+            span.style.willChange = 'transform, opacity';
+            span.innerHTML = char === ' ' ? '&nbsp;' : char;
+            frag.appendChild(span);
+          });
+          newNodes.push(frag);
+        } else {
+          newNodes.push(node);
+        }
+      });
+
+      textEl.innerHTML = '';
+      newNodes.forEach(n => textEl.appendChild(n));
+
+      const charSpans = textEl.querySelectorAll('.page-char-anim');
+      if (charSpans.length > 0) {
+        gsap.to(charSpans, {
+          opacity: 1,
+          y: 0,
+          rotation: 0,
+          duration: 0.6,
+          stagger: 0.018,
+          ease: 'back.out(1.6)',
+          delay: 0.1,
+          force3D: true,
+        });
+      }
+    });
+  }
+
+  /**
+   * Play the page entrance animation (All 3 boxes exit upwards to the top).
+   */
+  function playPageEntrance() {
+    const overlay = document.getElementById('page-transition-overlay');
+    if (!overlay) return;
+
+    const boxLeft = overlay.querySelector('.box-left');
+    const boxRight = overlay.querySelector('.box-right');
+    const boxBottom = overlay.querySelector('.box-bottom');
+
+    if (!boxLeft || !boxRight || !boxBottom) return;
+
+    // Set covered state initially
+    gsap.set(overlay, { pointerEvents: 'all' });
+    gsap.set(boxLeft, { x: '0%', y: '0%' });
+    gsap.set(boxRight, { x: '0%', y: '0%' });
+    gsap.set(boxBottom, { x: '0%', y: '0%' });
+
+    const exitTl = gsap.timeline({
+      onComplete: () => {
+        gsap.set(overlay, { pointerEvents: 'none' });
+        gsap.set(boxLeft, { x: '-100%', y: '0%' });
+        gsap.set(boxRight, { x: '100%', y: '0%' });
+        gsap.set(boxBottom, { x: '0%', y: '100%' });
+
+        triggerPageCharacterReveals();
+      }
+    });
+
+    // Sequence: Box 3 (Bottom), Box 2 (Right), Box 1 (Left) exit UP TO TOP!
+    exitTl
+      .to(boxBottom, { y: '-100%', duration: 0.55, ease: 'power4.inOut', force3D: true }, 0)
+      .to(boxRight, { y: '-100%', duration: 0.6, ease: 'power4.inOut', force3D: true }, 0.08)
+      .to(boxLeft, { y: '-100%', duration: 0.65, ease: 'power4.inOut', force3D: true }, 0.15);
+  }
+
+  /**
+   * Handle internal link clicks to trigger page exit animation.
+   */
+  function setupLinkInterception() {
+    document.querySelectorAll('a[href]').forEach(link => {
+      const anchor = link as HTMLAnchorElement;
+      const href = anchor.getAttribute('href');
+
+      if (
+        !href ||
+        href.startsWith('#') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:') ||
+        anchor.target === '_blank' ||
+        anchor.hasAttribute('download')
+      ) {
+        return;
+      }
+
+      const url = new URL(anchor.href, window.location.origin);
+      if (url.origin !== window.location.origin) return;
+
+      anchor.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        
+        e.preventDefault();
+        if (isNavigating) return;
+        isNavigating = true;
+
+        sessionStorage.setItem('playPageTransition', 'true');
+
+        const overlay = document.getElementById('page-transition-overlay');
+        if (!overlay) {
+          window.location.href = href;
+          return;
+        }
+
+        const boxLeft = overlay.querySelector('.box-left');
+        const boxRight = overlay.querySelector('.box-right');
+        const boxBottom = overlay.querySelector('.box-bottom');
+
+        gsap.set(overlay, { pointerEvents: 'all' });
+
+        const enterTl = gsap.timeline({
+          onComplete: () => {
+            window.location.href = href;
+          }
+        });
+
+        // 3-Box Arrival: Left box from left, Right box from right, Bottom box from bottom
+        enterTl
+          .to(boxLeft, { x: '0%', duration: 0.4, ease: 'power3.inOut', force3D: true }, 0)
+          .to(boxRight, { x: '0%', duration: 0.4, ease: 'power3.inOut', force3D: true }, 0.06)
+          .to(boxBottom, { y: '0%', duration: 0.5, ease: 'power4.inOut', force3D: true }, 0.12);
+      });
+    });
+  }
+
+  function initPageTransitions() {
+    isNavigating = false;
+    setupLinkInterception();
+
+    if (sessionStorage.getItem('playPageTransition') === 'true') {
+      sessionStorage.removeItem('playPageTransition');
+      playPageEntrance();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPageTransitions);
+  } else {
+    initPageTransitions();
+  }
+  document.addEventListener('astro:page-load', initPageTransitions);
+</script>

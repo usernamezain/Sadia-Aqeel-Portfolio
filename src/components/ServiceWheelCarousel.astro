@@ -1,0 +1,533 @@
+---
+/**
+ * ServiceWheelCarousel.astro — Sadia Aqeel Portfolio
+ * Standard GSAP ScrollTrigger Pinned Section following Official GSAP Guidelines.
+ * Fits 100% inside 100vh viewport height to eliminate clipping and drift.
+ */
+
+export interface ServiceWheelItem {
+  id: string;
+  num: string;
+  label: string;
+  subtitle: string;
+  image: string;
+  imageAlt: string;
+  desc: string;
+  weeks: string;
+  deliverables: string[];
+}
+
+interface Props {
+  items: ServiceWheelItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<!-- Pinned Section Container (100% width, 100vh height) -->
+<section class="wheel-pinned-section" id="wheel-pinned-sec">
+  
+  <!-- Content Card Container (Guaranteed to fit 100% inside 100vh) -->
+  <div class="wheel-content-card">
+    
+    <!-- Top Header Row of Active Service -->
+    <div class="wheel-card-header">
+      {items.map((item, index) => (
+        <div class={`wheel-header-panel ${index === 0 ? 'active' : ''}`} id={`header-panel-${index}`}>
+          <div class="header-badge-row">
+            <span class="panel-num-badge">{item.num} / 0{items.length}</span>
+            <span class="panel-time-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Est. {item.weeks}
+            </span>
+          </div>
+          <h2 class="panel-main-title">{item.label}</h2>
+          <p class="panel-main-desc">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Main Grid Body: Left Photo Mockup, Right 3D Wheel & Scope -->
+    <div class="wheel-card-body">
+      
+      <!-- Left Column: Photo Mockup Showcase -->
+      <div class="wheel-photo-container">
+        <div class="wheel-photo-frame">
+          {items.map((item, index) => (
+            <div 
+              class={`wheel-photo-slide ${index === 0 ? 'active' : ''}`}
+              id={`slide-img-${index}`}
+            >
+              <img 
+                src={item.image} 
+                alt={item.imageAlt} 
+                loading={index === 0 ? "eager" : "lazy"}
+                draggable="false"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right Column: 3D Radial Wheel Picker & Deliverables -->
+      <div class="wheel-controls-column">
+        
+        <!-- 3D Curved Radial Wheel Picker -->
+        <div class="wheel-picker-box" id="wheel-picker">
+          <span class="wheel-apex-marker" aria-hidden="true"></span>
+
+          <div class="wheel-items-track" id="wheel-track" tabIndex={0} role="listbox" aria-label="Select a service">
+            {items.map((item, index) => (
+              <button 
+                type="button"
+                class={`wheel-item-option ${index === 0 ? 'active' : ''}`}
+                data-index={index}
+                id={`wheel-opt-${index}`}
+                role="option"
+                aria-selected={index === 0 ? 'true' : 'false'}
+              >
+                <span class="wheel-opt-num">{item.num}</span>
+                <span class="wheel-opt-label">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Deliverables & CTA Action -->
+        <div class="wheel-info-box">
+          {items.map((item, index) => (
+            <div class={`wheel-info-panel ${index === 0 ? 'active' : ''}`} id={`info-panel-${index}`}>
+              <div class="panel-deliverables-grid">
+                {item.deliverables.map((deliv) => (
+                  <div class="panel-deliv-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    <span>{deliv}</span>
+                  </div>
+                ))}
+              </div>
+
+              <a href={`/contact?service=${encodeURIComponent(item.label)}`} class="panel-cta-btn magnetic">
+                <span>Inquire for {item.label}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ─── Pinned Section Styling ─────────────────────────────── */
+  .wheel-pinned-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 4vw;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Master Content Card (Fits 100% inside 100vh) */
+  .wheel-content-card {
+    width: 100%;
+    max-width: 1300px;
+    height: calc(100vh - 4rem);
+    max-height: 760px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(55, 72, 26, 0.12);
+    border-radius: 28px;
+    padding: clamp(1.5rem, 2.5vw, 2.5rem);
+    box-shadow: 0 20px 50px -15px rgba(55, 72, 26, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  /* Header Panels */
+  .wheel-card-header {
+    position: relative;
+    min-height: 100px;
+    margin-bottom: 1rem;
+  }
+
+  .wheel-header-panel {
+    display: none;
+  }
+
+  .wheel-header-panel.active {
+    display: block;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .header-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .panel-num-badge {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #759D42;
+    background: rgba(117, 157, 66, 0.12);
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+  }
+
+  .panel-time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #37481A;
+  }
+
+  .panel-main-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    font-weight: 800;
+    color: #37481A;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.3rem;
+  }
+
+  .panel-main-desc {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(55, 72, 26, 0.82);
+    max-width: 800px;
+  }
+
+  /* Main Grid Body */
+  .wheel-card-body {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Left Photo Frame */
+  .wheel-photo-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .wheel-photo-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-height: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #E8E6DF;
+    box-shadow: 0 15px 35px rgba(55, 72, 26, 0.1);
+    border: 1px solid rgba(55, 72, 26, 0.1);
+  }
+
+  .wheel-photo-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .wheel-photo-slide.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .wheel-photo-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Right Controls Column */
+  .wheel-controls-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 1rem;
+  }
+
+  .wheel-picker-box {
+    position: relative;
+    height: 240px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .wheel-apex-marker {
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #759D42;
+    box-shadow: 0 0 0 4px rgba(117, 157, 66, 0.25);
+    z-index: 10;
+  }
+
+  .wheel-items-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    cursor: grab;
+  }
+
+  .wheel-item-option {
+    position: absolute;
+    top: 50%;
+    left: 28px;
+    transform-origin: left center;
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0.7rem;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+    font-weight: 700;
+    color: rgba(55, 72, 26, 0.35);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-align: left;
+    outline: none;
+  }
+
+  .wheel-item-option.active {
+    color: #37481A;
+    font-weight: 800;
+  }
+
+  .wheel-opt-num {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #759D42;
+  }
+
+  /* Info Box & Deliverables */
+  .wheel-info-box {
+    position: relative;
+  }
+
+  .wheel-info-panel {
+    display: none;
+  }
+
+  .wheel-info-panel.active {
+    display: block;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .panel-deliverables-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem 1rem;
+    margin-bottom: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed rgba(55, 72, 26, 0.18);
+  }
+
+  .panel-deliv-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #37481A;
+  }
+
+  .panel-deliv-item svg {
+    color: #759D42;
+    flex-shrink: 0;
+  }
+
+  .panel-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 1.4rem;
+    border-radius: 9999px;
+    background: #37481A;
+    color: #F0EFEA;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 20px -4px rgba(55, 72, 26, 0.2);
+  }
+
+  .panel-cta-btn:hover {
+    background: #759D42;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px -4px rgba(117, 157, 66, 0.3);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile Responsive Touch Layout (< 868px) */
+  @media (max-width: 868px) {
+    .wheel-pinned-section {
+      height: auto;
+      max-height: none;
+      padding: 2rem 4vw;
+    }
+    .wheel-content-card {
+      height: auto;
+      max-height: none;
+      padding: 1.5rem;
+    }
+    .wheel-card-body {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .wheel-picker-box {
+      height: 180px;
+    }
+    .panel-deliverables-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Register GSAP ScrollTrigger plugin officially
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const sec = document.getElementById('wheel-pinned-sec');
+    const options = document.querySelectorAll('.wheel-item-option');
+    const slides = document.querySelectorAll('.wheel-photo-slide');
+    const headers = document.querySelectorAll('.wheel-header-panel');
+    const infoPanels = document.querySelectorAll('.wheel-info-panel');
+
+    if (!sec || options.length === 0) return;
+
+    const itemCount = options.length;
+    let rotation = 0;
+    const spacing = 16;
+    const radius = 260;
+
+    function updateWheelPositions(rot: number) {
+      const activeIdx = ((Math.round(rot) % itemCount) + itemCount) % itemCount;
+
+      options.forEach((opt, idx) => {
+        let offset = idx - rot;
+        while (offset > itemCount / 2) offset -= itemCount;
+        while (offset < -itemCount / 2) offset += itemCount;
+
+        const angle = offset * spacing;
+        const rad = (angle * Math.PI) / 180;
+        const x = -radius * (1 - Math.cos(rad));
+        const y = radius * Math.sin(rad);
+
+        const dist = Math.min(Math.abs(offset) / 3, 1);
+        const opacity = Math.max(0.12, Math.cos((dist * Math.PI) / 2));
+        const scale = Math.max(0.68, 1 - Math.abs(offset) * 0.08);
+
+        const htmlOpt = opt as HTMLElement;
+        htmlOpt.style.transform = `translate(${x}px, ${y}px) translateY(-50%) rotate(${angle}deg) scale(${scale})`;
+        htmlOpt.style.opacity = `${opacity}`;
+
+        if (Math.abs(offset) < 0.45) {
+          opt.classList.add('active');
+          opt.setAttribute('aria-selected', 'true');
+        } else {
+          opt.classList.remove('active');
+          opt.setAttribute('aria-selected', 'false');
+        }
+      });
+
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === activeIdx));
+      headers.forEach((hdr, i) => hdr.classList.toggle('active', i === activeIdx));
+      infoPanels.forEach((panel, i) => panel.classList.toggle('active', i === activeIdx));
+    }
+
+    // Initial position
+    updateWheelPositions(0);
+
+    const isDesktop = window.innerWidth >= 868;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (isDesktop && !prefersReduced) {
+      ScrollTrigger.create({
+        trigger: sec,
+        start: 'top top',
+        end: `+=${itemCount * 180}%`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.5,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          rotation = self.progress * (itemCount - 1);
+          updateWheelPositions(rotation);
+        }
+      });
+
+      // Recalculate measurements once initialized
+      ScrollTrigger.refresh();
+    }
+
+    options.forEach((opt) => {
+      opt.addEventListener('click', () => {
+        const idx = parseInt(opt.getAttribute('data-index') || '0', 10);
+        rotation = idx;
+        updateWheelPositions(rotation);
+      });
+    });
+
+  });
+</script>

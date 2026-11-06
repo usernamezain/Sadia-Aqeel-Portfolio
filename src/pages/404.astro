@@ -1,0 +1,24 @@
+---
+/**
+ * 404 Page — Not Found
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+---
+
+<BaseLayout title="Page Not Found" noindex={true}>
+  <Navbar />
+
+  <section class="not-found section" style="padding-top: calc(var(--nav-height) + var(--space-16));">
+    <div class="container" style="text-align: center; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <h1 style="font-size: var(--text-hero); color: rgba(233,69,96,0.2); line-height: 1;">404</h1>
+      <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-4);">Page Not Found</h2>
+      <p style="color: var(--color-gray-500); margin-bottom: var(--space-8); max-width: 400px;">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+      <a href="/" class="btn btn-primary magnetic">
+        Back to Home
+      </a>
+    </div>
+  </section>
+</BaseLayout>

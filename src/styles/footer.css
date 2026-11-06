@@ -1,0 +1,260 @@
+/* footer.css — Warm Editorial Footer with Physics CTA Arena */
+
+.footer {
+  position: relative;
+  width: 100%;
+  background-color: #F0EFEA;
+  color: #172408;
+  padding: clamp(3rem, 6vh, 6rem) 0 clamp(2rem, 4vh, 4rem) 0;
+  border-top: 1px solid rgba(55, 72, 26, 0.12);
+  overflow: hidden;
+}
+
+.footer-container {
+  width: min(92vw, 1440px);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Interactive Physics CTA Arena */
+.footer-cta-card {
+  position: relative;
+  width: 100%;
+  min-height: clamp(380px, 50vh, 520px);
+  background-color: #E5E3DB;
+  border: 1.5px solid rgba(55, 72, 26, 0.16);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+  margin-bottom: clamp(3rem, 6vh, 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Physics Canvas Background */
+.physics-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: grab;
+}
+
+.physics-canvas:active {
+  cursor: grabbing;
+}
+
+/* Foreground CTA Content */
+.footer-cta-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  max-width: 680px;
+  pointer-events: none; /* Allows mouse events to pass to canvas except for button */
+}
+
+.footer-cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(55, 72, 26, 0.15);
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #37481A;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.footer-cta-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #759D42;
+  box-shadow: 0 0 8px #759D42;
+}
+
+.footer-cta-title {
+  font-family: var(--font-heading, 'Instrument Serif', Georgia, serif);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.08;
+  color: #172408;
+  margin: 0 0 1.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.footer-cta-title em {
+  font-style: italic;
+  font-family: Georgia, serif;
+  color: #37481A;
+}
+
+/* CTA Button */
+.footer-cta-btn {
+  pointer-events: auto; /* Re-enable pointer events for clickability */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.25rem;
+  border-radius: 999px;
+  background-color: #172408;
+  color: #F0EFEA;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(23, 36, 8, 0.25);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer-cta-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  background-color: #273A0E;
+  box-shadow: 0 14px 32px rgba(23, 36, 8, 0.35);
+  color: #FFFFFF;
+}
+
+.footer-cta-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.footer-cta-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Physics hint badge */
+.physics-hint {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  z-index: 3;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #556635;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(55, 72, 26, 0.12);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Bottom Footer Bar */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(55, 72, 26, 0.12);
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-brand-name {
+  font-family: var(--font-heading, Georgia, serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #172408;
+  text-decoration: none;
+}
+
+.footer-brand-role {
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.85rem;
+  color: #556635;
+  margin-top: 0.2rem;
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-social-link {
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #556635;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.footer-social-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: #37481A;
+  transition: width 0.3s ease;
+}
+
+.footer-social-link:hover {
+  color: #172408;
+}
+
+.footer-social-link:hover::after {
+  width: 100%;
+}
+
+.footer-copy {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #759D42;
+  width: 100%;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .footer-cta-card {
+    border-radius: 22px;
+    min-height: 320px;
+  }
+
+  .footer-cta-content {
+    padding: 2rem 1rem;
+  }
+
+  .footer-cta-btn {
+    padding: 0.85rem 1.75rem;
+    font-size: 0.95rem;
+  }
+
+  .physics-hint {
+    bottom: 0.6rem;
+    right: 0.75rem;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-socials {
+    gap: 1.25rem;
+  }
+}

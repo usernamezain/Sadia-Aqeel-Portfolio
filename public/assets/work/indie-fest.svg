@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="100%" height="100%">
+  <rect width="400" height="600" fill="#F4F1EA"/>
+  <!-- Diagonal Yellow Stripe -->
+  <path d="M0 0 L400 200 L400 600 L0 400 Z" fill="#FFE500"/>
+  <!-- Swiss Grid Lines -->
+  <line x1="40" y1="0" x2="40" y2="600" stroke="#111111" stroke-width="0.5" stroke-dasharray="2 4"/>
+  <line x1="200" y1="0" x2="200" y2="600" stroke="#111111" stroke-width="0.5" stroke-dasharray="2 4"/>
+  <line x1="360" y1="0" x2="360" y2="600" stroke="#111111" stroke-width="0.5" stroke-dasharray="2 4"/>
+  <!-- Giant Graphic Text -->
+  <text x="40" y="140" font-family="'Helvetica Neue', Arial, sans-serif" font-size="76" font-weight="900" fill="#111111" letter-spacing="-3">INDIE</text>
+  <text x="40" y="210" font-family="'Helvetica Neue', Arial, sans-serif" font-size="76" font-weight="900" fill="#111111" letter-spacing="-3">FEST</text>
+  <text x="40" y="280" font-family="'Helvetica Neue', Arial, sans-serif" font-size="76" font-weight="900" fill="#FF2A00" letter-spacing="-3">'24</text>
+  <!-- Geometric circles -->
+  <circle cx="300" cy="420" r="70" fill="#111111"/>
+  <circle cx="270" cy="390" r="40" fill="#FF2A00"/>
+  <text x="40" y="520" font-family="monospace" font-size="12" font-weight="700" fill="#111111">VANCOUVER ART &amp; MUSIC</text>
+  <text x="40" y="540" font-family="monospace" font-size="11" fill="#666666">SEP 18-22 · LIVE PERFORMANCES</text>
+</svg>

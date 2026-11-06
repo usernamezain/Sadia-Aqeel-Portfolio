@@ -1,0 +1,1018 @@
+/* ─────────────────────────────────────────────────────────────
+   CONTACT PAGE STYLES — Frosted Glassmorphism Design System
+   Mapped to Sadia Aqeel Editorial Color Tokens & Typography
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --cream: #F0EFEA;
+  --forest: #2b4a1f; /* Deep moss forest green matching #37481A theme */
+  --moss: #6f9a4a;   /* Vibrant accent green matching #759D42 */
+  --sage: #cfe0b8;   /* Soft sage highlight */
+  --ink: #1d2a17;    /* Rich organic dark */
+  --glass: rgba(255, 255, 255, 0.42);
+  --glass-edge: rgba(255, 255, 255, 0.65);
+  --serif: 'Fraunces', Georgia, serif;
+  --serif-italic: 'Instrument Serif', Georgia, serif;
+  --sans: 'Instrument Sans', 'Satoshi', system-ui, -apple-system, sans-serif;
+}
+
+.contact-page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--cream);
+  color: var(--ink);
+  padding-bottom: clamp(6rem, 10vh, 12rem);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* ─── IDEA 1: Slow Animated Aurora Backdrop ───────────────── */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--cream);
+}
+
+.aurora i {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(75px);
+  opacity: 0.7;
+  will-change: transform;
+}
+
+.aurora i:nth-child(1) {
+  width: 46vw;
+  height: 46vw;
+  left: -8vw;
+  top: -10vw;
+  background: #9cc46a;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+
+.aurora i:nth-child(2) {
+  width: 38vw;
+  height: 38vw;
+  right: -6vw;
+  top: 20vh;
+  background: #2b4a1f;
+  opacity: 0.45;
+  animation: drift 28s ease-in-out infinite alternate-reverse;
+}
+
+.aurora i:nth-child(3) {
+  width: 34vw;
+  height: 34vw;
+  left: 30vw;
+  bottom: -14vw;
+  background: #e6d9a8;
+  animation: drift 25s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(6vw, 4vh, 0) scale(1.12);
+  }
+}
+
+.aurora.aurora--paused i {
+  animation-play-state: paused !important;
+}
+
+/* ─── Header Navigation Row ────────────────────────────── */
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+.contact-logo {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--forest);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.contact-logo__sub {
+  font-family: var(--serif-italic);
+  font-style: italic;
+  font-weight: 400;
+  margin-left: 0.25rem;
+  color: var(--moss);
+}
+
+.contact-meta {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.contact-meta__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  box-shadow: 0 4px 14px rgba(43, 74, 31, 0.04);
+}
+
+.contact-meta__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--moss);
+  box-shadow: 0 0 0 4px rgba(111, 154, 74, 0.2);
+  animation: pulseBeacon 2s infinite;
+}
+
+@keyframes pulseBeacon {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(111, 154, 74, 0.5); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(111, 154, 74, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(111, 154, 74, 0); }
+}
+
+/* ─── Hero Section ─────────────────────────────────────── */
+.contact-hero-sec {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8rem 5vw 4rem;
+  position: relative;
+  z-index: 5;
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
+
+.contact-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 9999px;
+  background: var(--forest);
+  color: #F0EFEA;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 20px -6px rgba(43, 74, 31, 0.4);
+}
+
+.contact-title {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 6.5vw, 5.8rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--forest);
+  margin-bottom: 1.5rem;
+  max-width: 1100px;
+  text-align: center;
+}
+
+.contact-title__italic {
+  font-family: var(--serif-italic);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--moss);
+}
+
+.contact-subtitle {
+  font-family: var(--sans);
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+  line-height: 1.65;
+  color: #4d5c44;
+  max-width: 780px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.contact-scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3.5rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(43, 74, 31, 0.6);
+  animation: bounceCue 2s ease-in-out infinite;
+}
+
+@keyframes bounceCue {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ─── Main Content Grid Layout ──────────────────────────── */
+.contact-container {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 5vw;
+  position: relative;
+  z-index: 10;
+}
+
+.contact-main-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: clamp(1.75rem, 3.5vw, 3rem);
+  align-items: start;
+}
+
+/* ─── IDEAS 2 & 3: Frosted Glass Cards with Specular Highlight & Inner Spotlight ─── */
+.glass {
+  --mx: 50%;
+  --my: 0%;
+  position: relative;
+  border-radius: 28px;
+  background: var(--glass);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset, 0 24px 60px -24px rgba(43, 74, 31, 0.28);
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+}
+
+/* Fallback background for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background: rgba(240, 239, 234, 0.94);
+  }
+}
+
+/* Specular 1px border highlight that follows the cursor */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx) var(--my), #ffffff, transparent 65%),
+              linear-gradient(160deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.08));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 1;
+}
+
+/* Inner spotlight pool inside the glass tracking the pointer */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(400px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.55), transparent 70%);
+}
+
+.glass:hover::after {
+  opacity: 1;
+}
+
+/* ─── Left Side: Interactive Project Brief Form ─────────── */
+.contact-form-card {
+  padding: clamp(2rem, 3.5vw, 3.25rem);
+}
+
+.form-step + .form-step {
+  margin-top: 34px;
+}
+
+.form-section-title {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--forest);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.form-section-num,
+.step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: #fff;
+  font: 600 0.9rem var(--sans);
+  display: grid;
+  place-items: center;
+  flex: none;
+  box-shadow: 0 4px 10px rgba(43, 74, 31, 0.3);
+}
+
+.form-section-desc,
+.sub {
+  font-family: var(--sans);
+  color: #5b6a51;
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+}
+
+/* ─── IDEA 4: Glass Service Chips that Fill Forest Green ─── */
+.contact-form-card .chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-form-card .chip-btn {
+  position: relative;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 12px 20px;
+  font: 500 0.95rem var(--sans);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1), background 0.25s, color 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.contact-form-card .chip-btn svg {
+  flex-shrink: 0;
+  transition: stroke 0.25s ease;
+}
+
+.contact-form-card .chip-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.contact-form-card .chip-btn:active {
+  transform: scale(0.96);
+}
+
+.contact-form-card .chip-btn[aria-pressed="true"] {
+  background: var(--forest);
+  color: #fff;
+  border-color: var(--forest);
+  box-shadow: 0 10px 24px -8px rgba(43, 74, 31, 0.6), 0 0 0 4px rgba(111, 154, 74, 0.25);
+}
+
+.contact-form-card .chip-btn[aria-pressed="true"] svg {
+  stroke: #fff;
+}
+
+.contact-form-card .chip-btn[aria-pressed="true"]::after {
+  content: "✓";
+  margin-left: 6px;
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+/* ─── IDEA 5: Budget Range Segmented Glass Control with Sliding Thumb ─── */
+.seg {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-sizing: border-box;
+}
+
+.seg button {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 12px 6px;
+  font: 600 0.92rem var(--sans);
+  color: #4d5c44;
+  transition: color 0.25s;
+  text-align: center;
+  border-radius: 999px;
+  outline: none;
+}
+
+.seg button[aria-checked="true"] {
+  color: #fff;
+}
+
+.thumb {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 10px) / 4);
+  border-radius: 999px;
+  background: var(--forest);
+  box-shadow: 0 8px 20px -6px rgba(43, 74, 31, 0.6);
+  transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (max-width: 560px) {
+  .seg {
+    grid-template-columns: 1fr 1fr;
+    border-radius: 22px;
+    gap: 4px;
+  }
+  .thumb {
+    display: none;
+  }
+  .seg button[aria-checked="true"] {
+    background: var(--forest);
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(43, 74, 31, 0.35);
+  }
+}
+
+/* ─── Form Fields: Glass Inset Wells that Glow on Focus ─── */
+.field-row,
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group.full {
+  grid-column: 1 / -1;
+}
+
+.input-label,
+label {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.input-label__optional {
+  font-weight: 400;
+  color: rgba(43, 74, 31, 0.55);
+  font-size: 0.82rem;
+}
+
+.custom-input,
+.custom-textarea,
+input,
+textarea {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 2px 6px rgba(43, 74, 31, 0.08);
+  outline: 0;
+  transition: box-shadow 0.25s, background 0.25s, border-color 0.25s;
+  box-sizing: border-box;
+}
+
+.custom-input:focus,
+.custom-textarea:focus,
+input:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 2px 6px rgba(43, 74, 31, 0.06), 0 0 0 4px rgba(111, 154, 74, 0.3);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.custom-textarea,
+textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* ─── IDEA 6: Primary Button with Diagonal Sheen on Hover ─── */
+.submit-btn,
+.send {
+  margin-top: 22px;
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 16px 30px;
+  background: var(--forest);
+  color: #fff;
+  font: 600 1rem var(--sans);
+  box-shadow: 0 14px 30px -12px rgba(43, 74, 31, 0.7);
+  transition: transform 0.25s, background 0.25s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+}
+
+.submit-btn:hover,
+.send:hover {
+  transform: translateY(-2px);
+}
+
+.submit-btn:active,
+.send:active {
+  transform: translateY(0);
+}
+
+.submit-btn::after,
+.send::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60%;
+  left: -80%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.submit-btn:hover::after,
+.send:hover::after {
+  left: 130%;
+}
+
+.submit-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.submit-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* ─── Right Side: Sidebar Cards Stack ───────────────────── */
+.contact-sidebar,
+.stack {
+  display: grid;
+  gap: 22px;
+}
+
+.sidebar-card {
+  padding: 28px;
+  border-radius: 24px;
+}
+
+.card-heading,
+.sidebar-card h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--forest);
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.card-text {
+  font-family: var(--sans);
+  color: #5b6a51;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+/* ─── IDEA 7: Direct Email Card with Morphing Copy Button ─── */
+.email-copy-box,
+.mail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 14px 14px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  font-family: var(--sans);
+  font-weight: 500;
+  margin-top: 14px;
+}
+
+.email-address {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  word-break: break-all;
+}
+
+.copy-btn,
+.copy {
+  border: 0;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: var(--forest);
+  color: #fff;
+  font: 600 0.9rem var(--sans);
+  min-width: 112px;
+  text-align: center;
+  transition: background 0.3s, transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1);
+  outline: none;
+}
+
+.copy-btn:hover,
+.copy:hover {
+  background: #37481A;
+}
+
+.copy-btn:active,
+.copy:active {
+  transform: scale(0.94);
+}
+
+.copy-btn.done,
+.copy.done {
+  background: var(--moss) !important;
+}
+
+/* ─── IDEA 8: Live Availability Pill with Pulse & Real UTC Clock ─── */
+.time-widget,
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(43, 74, 31, 0.25);
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(156, 196, 106, 0.35);
+  color: #3d6a22;
+  font-weight: 600;
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.live b {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5aa02c;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.live b::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: ping 1.8s ease-out infinite;
+}
+
+@keyframes ping {
+  to {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* ─── IDEA 9: Magnetic Social Links that Fill Green on Hover ─── */
+.socials-flex,
+.soc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.social-pill,
+.soc a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  transition: transform 0.2s ease-out, background 0.25s, color 0.25s, border-color 0.25s;
+  will-change: transform;
+  outline: none;
+}
+
+.social-pill:hover,
+.soc a:hover {
+  background: var(--forest);
+  color: #fff;
+  border-color: var(--forest);
+}
+
+.social-pill svg {
+  transition: transform 0.2s ease;
+}
+
+.social-pill:hover svg {
+  transform: translate(2px, -2px);
+}
+
+
+/* ─── FAQ Accordion Section ──────────────────────────────── */
+.faq-section {
+  max-width: 1220px;
+  margin: clamp(4rem, 8vw, 7rem) auto 0;
+  padding: 0 5vw;
+  position: relative;
+  z-index: 10;
+}
+
+.faq-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+.faq-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  color: var(--forest);
+  letter-spacing: -0.02em;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.25rem;
+}
+
+.faq-item {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+  box-shadow: 0 8px 24px -10px rgba(43, 74, 31, 0.12);
+}
+
+.faq-item.active {
+  border-color: var(--moss);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.35rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--forest);
+  cursor: pointer;
+  gap: 1rem;
+  outline: none;
+}
+
+.faq-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(43, 74, 31, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  color: var(--forest);
+}
+
+.faq-icon svg {
+  transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-icon {
+  background: var(--moss);
+  color: #ffffff;
+}
+
+.faq-item.active .faq-icon svg {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s ease;
+  padding: 0 1.5rem;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding: 0 1.5rem 1.35rem;
+}
+
+.faq-answer-text {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #4d5c44;
+}
+
+/* ─── Toast Feedback Popup ───────────────────────────────── */
+.contact-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--forest);
+  color: #F0EFEA;
+  padding: 0.85rem 1.4rem;
+  border-radius: 9999px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 9999;
+}
+
+.contact-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ─── Form Success Overlay State ─────────────────────────── */
+.form-success-state {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.form-success-state.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(111, 154, 74, 0.15);
+  color: var(--moss);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+/* ─── Accessibility & Reduced Motion ─────────────────────── */
+:focus-visible {
+  outline: 3px solid var(--moss);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .aurora i {
+    animation: none !important;
+  }
+  .live b::after {
+    animation: none !important;
+  }
+  .submit-btn::after,
+  .send::after {
+    display: none !important;
+  }
+  .social-pill,
+  .soc a {
+    will-change: auto !important;
+  }
+}
+
+/* ─── Responsive Layout ──────────────────────────────────── */
+@media (max-width: 860px) {
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+  }
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .field-row,
+  .fields {
+    grid-template-columns: 1fr;
+  }
+  .contact-title {
+    font-size: clamp(2.3rem, 9vw, 3.6rem);
+  }
+  .contact-form-card {
+    padding: 1.5rem;
+    border-radius: 22px;
+  }
+  .sidebar-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+  .contact-toast {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    justify-content: center;
+  }
+}

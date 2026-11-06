@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-aura" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A1C14"/>
+      <stop offset="60%" stop-color="#C86D51"/>
+      <stop offset="100%" stop-color="#E8A87C"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="640" fill="url(#bg-aura)"/>
+  <!-- Arch Backdrop Frame -->
+  <path d="M 60 180 A 120 120 0 0 1 300 180 L 300 520 L 60 520 Z" fill="#24100B" opacity="0.6"/>
+  <circle cx="180" cy="180" r="100" fill="none" stroke="#F4D0C5" stroke-width="1" opacity="0.3"/>
+  <!-- Fashion Silhouette / Shape -->
+  <path d="M 180 120 Q 210 160 220 250 L 250 480 L 110 480 L 140 250 Z" fill="#E8A87C" opacity="0.85"/>
+  <!-- Typography -->
+  <text x="180" y="80" font-family="'Times New Roman', serif" font-style="italic" font-size="36" fill="#F4E9E2" text-anchor="middle">Aura Wear</text>
+  <text x="180" y="105" font-family="sans-serif" font-size="9" font-weight="600" fill="#F4D0C5" text-anchor="middle" letter-spacing="5">AUTUMN/WINTER LOOKBOOK</text>
+  <text x="180" y="580" font-family="monospace" font-size="10" fill="#24100B" text-anchor="middle">ISSUE 04 · 2024</text>
+</svg>

@@ -1,0 +1,356 @@
+---
+/**
+ * Services Page — Sadia Aqeel Portfolio
+ * Clean, high-impact editorial design showcase featuring 6 service cards with
+ * high-resolution 8K generated mockup images, vector icons, key deliverables,
+ * interactive project timeline calculator, and 4-step creative process.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import ServicesSwatches from '../components/ServicesSwatches.astro';
+import '../styles/hero.css';
+import '../styles/services.css';
+
+const detailedServices = [
+  {
+    num: "01",
+    title: "Brand Identity & Strategy",
+    desc: "Complete visual positioning that defines your brand's voice, values, and recognition across all customer touchpoints.",
+    image: "/assets/services/brand-identity.jpg",
+    imageAlt: "Luxury debossed brand identity mockup with linen guidelines book and gold foil stamp",
+    tag: "Brand Identity",
+    weeks: "3-4 Weeks",
+    deliverables: [
+      "Logo System & Symbol Marks",
+      "Brand Guidelines & Stylebook",
+      "Color Palette & Typography System",
+      "Social & Marketing Asset Templates"
+    ],
+    icon: "palette"
+  },
+  {
+    num: "02",
+    title: "Packaging & Print Design",
+    desc: "Tactile, shelf-ready packaging, editorial publications, and high-impact print collateral crafted for memorable physical unboxing.",
+    image: "/assets/services/packaging-design.jpg",
+    imageAlt: "Organic ceramic bottle and luxury paper box packaging design with sage green accents",
+    tag: "Packaging & Print",
+    weeks: "2-3 Weeks",
+    deliverables: [
+      "Custom Box & Bottle Packaging",
+      "Print Collateral & Merch Design",
+      "Vector Dielines & Print Spec Handoff",
+      "Editorial Books & Lookbooks"
+    ],
+    icon: "package"
+  },
+  {
+    num: "03",
+    title: "Digital & Web Experience",
+    desc: "Clean, responsive web interfaces and digital graphics engineered for seamless user engagement and conversion.",
+    image: "/assets/services/digital-experience.jpg",
+    imageAlt: "Editorial website layout display on laptop and tablet screen on warm workspace",
+    tag: "Digital & UI/UX",
+    weeks: "3-4 Weeks",
+    deliverables: [
+      "Website & Portfolio UI Design",
+      "Responsive Interactive Components",
+      "Digital Campaign & Banner Kits",
+      "Design Systems & Component Libraries"
+    ],
+    icon: "code"
+  },
+  {
+    num: "04",
+    title: "Custom Illustration & Assets",
+    desc: "Bespoke vector illustrations, brand iconography, and custom artwork tailored to elevate your story beyond template design.",
+    image: "/assets/services/custom-illustration.jpg",
+    imageAlt: "Custom vector botanical and geometric illustration art print framed in natural oak wood",
+    tag: "Custom Illustration",
+    weeks: "2 Weeks",
+    deliverables: [
+      "Custom Vector Character & Art",
+      "Icon Sets & Infographics",
+      "Editorial & Pattern Artwork",
+      "High-Resolution Vector Handoff"
+    ],
+    icon: "pen"
+  },
+  {
+    num: "05",
+    title: "Motion & Social Graphics",
+    desc: "Dynamic motion graphics, animated logo reveals, and social video kits designed to capture attention in fast-moving feeds.",
+    image: "/assets/services/motion-graphics.jpg",
+    imageAlt: "3D dynamic motion graphics keyframe display showing fluid organic floating shapes",
+    tag: "Motion & Social",
+    weeks: "1-2 Weeks",
+    deliverables: [
+      "Animated Logo Ident Revealers",
+      "Social Reel & Story Templates",
+      "UI Micro-Interactions & Motion",
+      "Exported Lottie & MP4 Assets"
+    ],
+    icon: "motion"
+  },
+  {
+    num: "06",
+    title: "Complete Brand Rebrand",
+    desc: "End-to-end transformation for evolving companies needing a modern visual identity, website, packaging, and launch strategy.",
+    image: "/assets/services/complete-rebrand.jpg",
+    imageAlt: "Comprehensive brand rebrand showcase featuring tote bag, notebook, and packaging on warm linen",
+    tag: "Complete Rebrand",
+    weeks: "4-6 Weeks",
+    deliverables: [
+      "Full Visual & Verbal Audit",
+      "Rebrand Launch Campaign Assets",
+      "Website & Packaging Overhaul",
+      "Dedicated Design Retainer Support"
+    ],
+    icon: "rocket"
+  }
+];
+---
+
+<BaseLayout 
+  title="Design Services & Packages — Sadia Aqeel Graphic Designer" 
+  description="Professional graphic design services by Sadia Aqeel: brand identity, logo design, social media marketing kits, commercial posters & flyers, custom book covers, packaging, and UI/UX design."
+>
+  <div class="services-page-wrapper">
+
+    <!-- Ambient Parallax Background Decor -->
+    <div class="services-bg-decor" aria-hidden="true">
+      <div class="services-cloud services-cloud--1" data-parallax="0.2"></div>
+      <div class="services-cloud services-cloud--2" data-parallax="-0.15"></div>
+      <div class="services-cloud services-cloud--3" data-parallax="0.3"></div>
+      <div class="services-shape-ring" data-parallax="-0.25"></div>
+    </div>
+
+    <!-- ─── Top Header Navigation Row ──────────────────────────── -->
+    <header class="services-header">
+      <a href="/" class="services-logo" aria-label="Sadia Aqeel — Home">
+        Sadia<span class="services-logo__sub">Aqeel</span>
+      </a>
+    </header>
+
+    <!-- ─── Hero Section (Full Viewport Centered with GSAP) ────── -->
+    <section class="services-hero-sec" id="services-hero-sec">
+      <div class="services-hero-content" id="services-hero-content">
+        <div class="services-tag">Services Overview</div>
+        
+        <h1 class="services-title" id="services-hero-title">
+          Design services built to<br>
+          <span class="services-title__italic">transform</span> your brand.
+        </h1>
+        
+        <p class="services-subtitle" id="services-hero-sub">
+          From strategic brand identities and custom packaging to high-converting web experiences and motion graphics — every detail is executed with precision.
+        </p>
+
+        <div class="services-scroll-cue" id="services-scroll-cue">
+          <span>Scroll to explore services</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Main Content Showcase Container ──────────────────── -->
+    <div class="services-container">
+      
+      <!-- Interactive Design Swatches System with Inertial Bend -->
+      <ServicesSwatches services={detailedServices} />
+
+      <!-- ─── Interactive Project Timeline Estimator Widget ─── -->
+      <section class="estimator-section" data-animate="fade-up">
+        <div class="estimator-header">
+          <h2 class="estimator-title">Estimate Your Timeline</h2>
+          <p class="card-text" style="font-size: 1.05rem; margin-top: 0.5rem;">
+            Click your required project scope items below to calculate estimated production timelines.
+          </p>
+        </div>
+
+        <div class="estimator-grid">
+          <div class="estimator-options" id="estimator-options-list">
+            
+            <div class="estimator-item selected" data-weeks="3">
+              <span class="estimator-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <span>Brand Identity & Guidelines</span>
+              </span>
+              <span class="estimator-time">3 Weeks</span>
+            </div>
+
+            <div class="estimator-item" data-weeks="2">
+              <span class="estimator-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+                <span>Packaging & Dieline Production</span>
+              </span>
+              <span class="estimator-time">2 Weeks</span>
+            </div>
+
+            <div class="estimator-item" data-weeks="3">
+              <span class="estimator-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/>
+                </svg>
+                <span>Digital Web UI Design</span>
+              </span>
+              <span class="estimator-time">3 Weeks</span>
+            </div>
+
+            <div class="estimator-item" data-weeks="1">
+              <span class="estimator-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="23 7 16 12 23 17 23 7"/>
+                  <rect x="1" y="5" width="15" height="14" rx="2"/>
+                </svg>
+                <span>Motion Graphics & Revealers</span>
+              </span>
+              <span class="estimator-time">1 Week</span>
+            </div>
+
+          </div>
+
+          <div class="estimator-result-card">
+            <span class="estimator-result-title">Estimated Completion</span>
+            <div class="estimator-result-time" id="estimator-total-display">3 Weeks</div>
+            <p class="estimator-result-desc">
+              Based on single-project focus and structured review cycles. Ready to reserve your spot?
+            </p>
+            <a href="/contact" class="estimator-btn magnetic">
+              <span>Book Project Slot</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── 4-Step Process Journey Section ────────────────── -->
+      <section class="process-section" data-animate="fade-up">
+        <div class="process-header">
+          <h2 class="process-title">How We Work Together</h2>
+          <p class="card-text" style="font-size: 1.05rem; margin-top: 0.5rem;">
+            A structured 4-step creative workflow designed for clarity and quality execution.
+          </p>
+        </div>
+
+        <div class="process-grid" data-stagger-parent data-stagger-delay="0.15">
+          
+          <div class="process-card" data-stagger-child>
+            <span class="process-step-num">01</span>
+            <h3>Discovery</h3>
+            <p>In-depth research into your brand goals, market competitors, target audience, and project vision.</p>
+          </div>
+
+          <div class="process-card" data-stagger-child>
+            <span class="process-step-num">02</span>
+            <h3>Concept</h3>
+            <p>Developing creative directions, moodboards, color systems, and initial visual concept drafts.</p>
+          </div>
+
+          <div class="process-card" data-stagger-child>
+            <span class="process-step-num">03</span>
+            <h3>Craft</h3>
+            <p>Meticulous design refinement, typography pairing, grid layout tuning, and 3D mockup previews.</p>
+          </div>
+
+          <div class="process-card" data-stagger-child>
+            <span class="process-step-num">04</span>
+            <h3>Deliver</h3>
+            <p>Complete source vector asset handoff, brand books, export specs, and long-term retainer support.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  import { gsap, ScrollTrigger } from '../animations/gsap-setup';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // ─── GSAP ScrollTrigger Hero Scale Down ────────────
+    const heroSec = document.getElementById('services-hero-sec');
+    const heroContent = document.getElementById('services-hero-content');
+    const heroCue = document.getElementById('services-scroll-cue');
+
+    if (heroSec && heroContent) {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReduced) {
+        gsap.to(heroContent, {
+          scale: 0.78,
+          y: -50,
+          opacity: 0.9,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroSec,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.5,
+          }
+        });
+
+        if (heroCue) {
+          gsap.to(heroCue, {
+            opacity: 0,
+            y: -20,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: heroSec,
+              start: 'top top',
+              end: '30% top',
+              scrub: true,
+            }
+          });
+        }
+      }
+    }
+
+    // ─── Interactive Estimator Widget Logic ───────────────
+    const estimatorItems = document.querySelectorAll('#estimator-options-list .estimator-item');
+    const totalDisplay = document.getElementById('estimator-total-display');
+
+    function calculateWeeks() {
+      let total = 0;
+      estimatorItems.forEach(item => {
+        if (item.classList.contains('selected')) {
+          const w = parseInt(item.getAttribute('data-weeks') || '0', 10);
+          total += w;
+        }
+      });
+
+      if (totalDisplay) {
+        if (total === 0) {
+          totalDisplay.textContent = 'Select Items';
+        } else {
+          totalDisplay.textContent = `${total} Week${total > 1 ? 's' : ''}`;
+        }
+      }
+    }
+
+    estimatorItems.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('selected');
+        calculateWeeks();
+      });
+    });
+
+  });
+</script>

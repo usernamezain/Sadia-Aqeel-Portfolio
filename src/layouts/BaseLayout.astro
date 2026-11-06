@@ -1,0 +1,164 @@
+---
+/**
+ * BaseLayout — Master layout for all pages.
+ * Handles SEO meta, font preloading, global styles, and animation init.
+ */
+import '../styles/fonts.css';
+import '../styles/global.css';
+import '../styles/components.css';
+import { siteConfig } from '../data/portfolio';
+import { getPageTitle, getPersonSchema, getWebsiteSchema, getProfessionalServiceSchema } from '../utils/seo';
+
+import Dock from '../components/Dock.astro';
+import Preloader from '../components/Preloader';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  ogImage = siteConfig.ogImage,
+  canonicalUrl,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = getPageTitle(title);
+const canonical = canonicalUrl || Astro.url.href;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteConfig.url}${ogImage}`;
+---
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- ─── Critical Meta ─────────────────────────────────── -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- ─── SEO Meta ──────────────────────────────────────── -->
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={siteConfig.keywords} />
+    <meta name="author" content={siteConfig.name} />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- ─── Open Graph ────────────────────────────────────── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${siteConfig.name} — Graphic Designer Portfolio`} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={`${siteConfig.name} Creative Studio`} />
+    <meta property="og:locale" content={siteConfig.locale} />
+
+    <!-- ─── Twitter Card ──────────────────────────────────── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={`${siteConfig.name} — Graphic Designer Portfolio`} />
+    <meta name="twitter:site" content={siteConfig.twitterHandle} />
+    <meta name="twitter:creator" content={siteConfig.twitterHandle} />
+
+    <!-- ─── Mobile Web App & Theme ────────────────────────── -->
+    <meta name="theme-color" content="#F0EFEA" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Sadia Aqeel" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- ─── Favicons ──────────────────────────────────────── -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- ─── Font Preloading ───────────────────────────────── -->
+    <link rel="preload" href="/LastoriaBoldRegular.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Fallback Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Hero fonts: Fraunces (logo), Instrument Serif (headline), Instrument Sans (UI) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800;9..144,900&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ─── Structured Data (JSON-LD) ──────────────────────── -->
+    <script type="application/ld+json" set:html={getWebsiteSchema()} />
+    <script type="application/ld+json" set:html={getPersonSchema()} />
+    <script type="application/ld+json" set:html={getProfessionalServiceSchema()} />
+
+    <!-- ─── Preloader Returning Session Check (Zero Flash) ─── -->
+    <script is:inline>
+      try {
+        if (sessionStorage.getItem('hasSeenPreloader') === 'true') {
+          document.documentElement.classList.add('preloader-done');
+        }
+      } catch (e) {}
+    </script>
+    <style is:inline>
+      html.preloader-done #preloader-root,
+      html.preloader-done .preloader-overlay {
+        display: none !important;
+      }
+    </style>
+
+    <!-- ─── Generator ─────────────────────────────────────── -->
+    <meta name="generator" content={Astro.generator} />
+  </head>
+
+  <body class="noise">
+    <!-- Full-screen Creative Signature Preloader (Session Once) -->
+    <div id="preloader-root" style="overflow: visible;">
+      <Preloader client:load />
+    </div>
+
+    <!-- Skip to content for accessibility -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+
+    <!-- Main content slot -->
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <!-- Bottom Fixed Navigation Dock (Visible on all pages) -->
+    <Dock />
+
+    <!-- ─── Client-side Animation Init ────────────────────── -->
+    <script>
+      import { initAllAnimations } from '../animations/gsap-setup';
+      import { initCustomCursor } from '../animations/cursor';
+      import { initLazyImages } from '../utils/performance';
+
+      function initBase() {
+        initLazyImages();
+        initAllAnimations();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBase);
+      } else {
+        initBase();
+      }
+
+      // Re-init on Astro page transitions
+      document.addEventListener('astro:page-load', initBase);
+    </script>
+  </body>
+</html>

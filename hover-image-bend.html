@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hover Image Bend</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Schibsted+Grotesk:wght@400;500&display=swap">
+<style>
+  :root { --ink:#08060F; --text:#EDE9FA; --mute:#A59FBC; --amber:#FFB44A; --line:rgba(237,233,250,.14); }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--ink); color:var(--text); font:400 16px/1.5 'Schibsted Grotesk', system-ui, sans-serif; }
+  .wrap { max-width:1440px; margin:0 auto; padding:clamp(48px,8vw,120px) clamp(16px,4vw,56px); }
+  h1 { margin:0 0 clamp(24px,4vw,56px); font:800 clamp(2.4rem,6vw,5rem)/.95 'Big Shoulders Display', Impact, sans-serif; }
+  ul { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+  a.row { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.5fr); gap:.8rem 2rem; align-items:center; padding-block:clamp(1rem,2.2vw,1.8rem); border-bottom:1px solid var(--line); color:inherit; text-decoration:none; transition:opacity .4s; }
+  .name { font:800 clamp(2.6rem,7.2vw,6.6rem)/.95 'Big Shoulders Display', Impact, sans-serif; transition:transform .7s cubic-bezier(.22,1,.36,1), color .3s; }
+  .desc { color:var(--mute); max-width:36ch; }
+  .tag { justify-self:end; text-align:right; color:var(--mute); font-size:.85rem; }
+  @media (hover:hover) {
+    ul:hover a.row { opacity:.3; }
+    ul a.row:hover { opacity:1; }
+    a.row:hover .name { transform:translateX(1.2rem); color:var(--amber); }
+  }
+  @media (max-width:760px) { a.row { grid-template-columns:1fr; } .tag { justify-self:start; text-align:left; } }
+  #gl { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:10; visibility:hidden; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Hover a row.</h1>
+  <!--
+    To use your own pictures, add data-img="https://your-site.com/photo.jpg" to a row.
+    The image must be on a server that allows cross-origin loading (or the same site).
+    Rows without data-img get a generated picture.
+  -->
+  <ul id="list">
+    <li><a class="row" href="#"><span class="name">AdobeStock</span><span class="desc">Stock content, produced and submitted with AI.</span><span class="tag">Stock marketplace</span></a></li>
+    <li><a class="row" href="#"><span class="name">Pngtree</span><span class="desc">Graphic resources for a second stock marketplace.</span><span class="tag">Stock marketplace</span></a></li>
+    <li><a class="row" href="#"><span class="name">Etsy</span><span class="desc">Products on a marketplace buyers already use.</span><span class="tag">Online shop</span></a></li>
+    <li><a class="row" href="#"><span class="name">YouTube</span><span class="desc">Channels where AI handles the production work.</span><span class="tag">Channels</span></a></li>
+    <li><a class="row" href="#"><span class="name">Pinterest</span><span class="desc">Pins that send steady traffic to your content.</span><span class="tag">Traffic</span></a></li>
+    <li><a class="row" href="#"><span class="name">Printify</span><span class="desc">Print-on-demand products with no stock to hold.</span><span class="tag">Print on demand</span></a></li>
+    <li><a class="row" href="#"><span class="name">Video editing</span><span class="desc">Edit for clients, with AI doing the heavy lifting.</span><span class="tag">Client work</span></a></li>
+    <li><a class="row" href="#"><span class="name">SaaS tools</span><span class="desc">Build your own software tools and sell them.</span><span class="tag">Software</span></a></li>
+  </ul>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!window.THREE || !fine || reduce) return;
+
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#list .row'));
+  var names = rows.map(function (r) { return r.querySelector('.name').textContent; });
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  /* ---- generated pictures (used when a row has no data-img) ---- */
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function rng(s) { return function () { s |= 0; s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  var PAL = [['#8A6BFF','#FFB44A'],['#2DD4BF','#F472B6'],['#FF8A5B','#FFE08A'],['#F472B6','#8A6BFF'],['#60A5FA','#FFB44A'],['#FFB44A','#8A6BFF'],['#8A6BFF','#2DD4BF'],['#2DD4BF','#FFB44A']];
+  function art(i, c, p, r) {
+    var x, y, k, t;
+    if (i % 4 === 0) { for (y = 0; y < 3; y++) for (x = 0; x < 3; x++) { rr(c, 40 + x * 146, 50 + y * 146, 126, 126, 14); c.fillStyle = 'rgba(237,233,250,' + (0.08 + r() * 0.18) + ')'; c.fill(); c.fillStyle = p[(x + y) % 2]; c.globalAlpha = .55; c.beginPath(); c.arc(80 + x * 146 + r() * 40, 110 + y * 146, 16 + r() * 18, 0, 7); c.fill(); c.globalAlpha = 1; } }
+    else if (i % 4 === 1) { for (k = 0; k < 9; k++) { var X = 70 + r() * 370, Y = 70 + r() * 340, s = 44 + r() * 56; c.fillStyle = p[k % 2]; c.globalAlpha = .8; c.strokeStyle = '#EDE9FA'; c.lineWidth = 6; c.beginPath(); t = k % 3; if (t === 0) c.arc(X, Y, s, 0, 7); else if (t === 1) rr(c, X - s, Y - s, s * 2, s * 2, 16); else { c.moveTo(X, Y - s); c.lineTo(X + s, Y + s); c.lineTo(X - s, Y + s); c.closePath(); } c.fill(); c.globalAlpha = 1; c.stroke(); } }
+    else if (i % 4 === 2) { for (var col = 0; col < 3; col++) { y = 50; while (y < 440) { var h = 70 + r() * 130; rr(c, 40 + col * 148, y, 132, Math.min(h, 450 - y), 16); c.fillStyle = r() > .5 ? p[0] : p[1]; c.globalAlpha = .25 + r() * .5; c.fill(); c.globalAlpha = 1; y += h + 14; } } }
+    else { for (t = 0; t < 5; t++) { x = 40; while (x < 440) { var w = 50 + r() * 120; rr(c, x, 70 + t * 76, Math.min(w, 472 - x), 56, 10); c.fillStyle = t % 2 ? p[0] : p[1]; c.globalAlpha = .3 + r() * .5; c.fill(); c.globalAlpha = 1; x += w + 10; } } c.fillStyle = '#FFB44A'; c.fillRect(300, 40, 4, 420); }
+  }
+  function makeTex(i) {
+    var row = rows[i], url = row.getAttribute('data-img');
+    if (url) {
+      var tex = new THREE.Texture();
+      var img = new Image(); img.crossOrigin = 'anonymous';
+      img.onload = function () { tex.image = img; tex.minFilter = THREE.LinearFilter; tex.needsUpdate = true; };
+      img.src = url;
+      return tex;
+    }
+    var cv = document.createElement('canvas'); cv.width = 512; cv.height = 640;
+    var c = cv.getContext('2d'), p = PAL[i % PAL.length], r = rng(i * 977 + 13);
+    var g = c.createLinearGradient(0, 0, 512, 640);
+    g.addColorStop(0, p[0]); g.addColorStop(.55, '#1b1430'); g.addColorStop(1, '#08060F');
+    c.fillStyle = g; c.fillRect(0, 0, 512, 640);
+    art(i, c, p, r);
+    var fs = 104, f = function () { return '900 ' + fs + 'px "Big Shoulders Display", Impact, sans-serif'; };
+    c.fillStyle = '#EDE9FA'; c.font = f();
+    while (c.measureText(names[i]).width > 440 && fs > 40) { fs -= 4; c.font = f(); }
+    c.fillText(names[i], 36, 590);
+    c.fillStyle = '#FFB44A'; c.fillRect(36, 520, 64, 6);
+    var t2 = new THREE.CanvasTexture(cv); t2.minFilter = THREE.LinearFilter; return t2;
+  }
+
+  function build() {
+    var canvas = document.createElement('canvas'); canvas.id = 'gl'; document.body.appendChild(canvas);
+    var renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true }); } catch (e) { return; }
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x000000, 0);
+    var W = innerWidth, H = innerHeight;
+    renderer.setSize(W, H, false);
+    var scene = new THREE.Scene();
+    var cam = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, -1000, 1000);
+    var PW = Math.min(340, W * .26), PH = PW * 1.25;
+    var texs = rows.map(function (_, i) { return makeTex(i); });
+
+    var mat = new THREE.ShaderMaterial({
+      transparent: true,
+      uniforms: { uTex: { value: texs[0] }, uVel: { value: new THREE.Vector2() }, uOp: { value: 0 } },
+      vertexShader: [
+        'uniform vec2 uVel; varying vec2 vUv;',
+        'void main(){',
+        '  vUv = uv; vec3 p = position;',
+        '  p.x += uVel.x * sin(uv.y*3.14159) * .22;',   /* bend sideways */
+        '  p.y += uVel.y * sin(uv.x*3.14159) * .22;',   /* bend vertically */
+        '  p.x += uVel.x * (uv.y-.5) * .18;',           /* skew */
+        '  gl_Position = projectionMatrix*modelViewMatrix*vec4(p,1.0);',
+        '}'
+      ].join('\n'),
+      fragmentShader: [
+        'uniform sampler2D uTex; uniform vec2 uVel; uniform float uOp; varying vec2 vUv;',
+        'float rbox(vec2 p, vec2 b, float r){ vec2 q = abs(p)-b+r; return length(max(q,0.))+min(max(q.x,q.y),0.)-r; }',
+        'void main(){',
+        '  vec2 off = uVel*0.016;',                      /* RGB split follows speed */
+        '  float r = texture2D(uTex, vUv+off).r;',
+        '  float g = texture2D(uTex, vUv).g;',
+        '  float b = texture2D(uTex, vUv-off).b;',
+        '  float d = rbox(vUv-.5, vec2(.5), .05);',
+        '  float a = smoothstep(.0,-.012,d);',
+        '  gl_FragColor = vec4(vec3(r,g,b), a*uOp);',
+        '}'
+      ].join('\n')
+    });
+    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 20, 20), mat);
+    mesh.scale.set(PW, PH, 1);
+    scene.add(mesh);
+
+    var cur = { x: W / 2, y: H / 2 }, tgt = { x: W / 2, y: H / 2 };
+    var vel = new THREE.Vector2(), shown = false, op = 0, sc = 1;
+
+    addEventListener('pointermove', function (e) { tgt.x = e.clientX; tgt.y = e.clientY; });
+    rows.forEach(function (row, i) {
+      row.addEventListener('mouseenter', function () {
+        mat.uniforms.uTex.value = texs[i];
+        if (!shown) { shown = true; sc = .8; canvas.style.visibility = 'visible'; }
+      });
+    });
+    document.getElementById('list').addEventListener('mouseleave', function () { shown = false; });
+
+    function tick() {
+      requestAnimationFrame(tick);
+      op += ((shown ? 1 : 0) - op) * .14;
+      sc += (1 - sc) * .1;
+      if (!shown && op < .01) { canvas.style.visibility = 'hidden'; return; }
+      var dx = tgt.x - cur.x, dy = tgt.y - cur.y;
+      cur.x += dx * .12; cur.y += dy * .12;
+      vel.x += (clamp(dx * .02, -1.5, 1.5) - vel.x) * .2;
+      vel.y += (clamp(-dy * .02, -1.5, 1.5) - vel.y) * .2;
+      mat.uniforms.uVel.value.copy(vel);
+      mat.uniforms.uOp.value = op;
+      mesh.scale.set(PW * sc, PH * sc, 1);
+      mesh.position.set(Math.min(cur.x + PW * .62, W - PW / 2 - 16) - W / 2, -(cur.y - H / 2), 0);
+      mesh.rotation.z = -vel.x * .08;
+      renderer.render(scene, cam);
+    }
+    tick();
+
+    addEventListener('resize', function () {
+      W = innerWidth; H = innerHeight;
+      renderer.setSize(W, H, false);
+      cam.left = -W / 2; cam.right = W / 2; cam.top = H / 2; cam.bottom = -H / 2;
+      cam.updateProjectionMatrix();
+      PW = Math.min(340, W * .26); PH = PW * 1.25;
+    });
+  }
+
+  if (document.fonts && document.fonts.load) {
+    Promise.race([document.fonts.load('900 100px "Big Shoulders Display"'), new Promise(function (r) { setTimeout(r, 2500); })]).then(build);
+  } else build();
+})();
+</script>
+</body>
+</html>

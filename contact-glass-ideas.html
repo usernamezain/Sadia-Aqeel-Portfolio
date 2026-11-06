@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact section: glassmorphism ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#eef0e6; --forest:#2b4a1f; --moss:#6f9a4a; --sage:#cfe0b8; --ink:#1d2a17;
+  --glass:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.55);
+  --serif:"Fraunces",Georgia,serif; --sans:"DM Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--cream);min-height:100vh;overflow-x:hidden;line-height:1.5}
+
+/* IDEA 1: aurora backdrop. Glass only looks like glass when something colourful sits behind it. */
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--cream)}
+.aurora i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;will-change:transform}
+.aurora i:nth-child(1){width:46vw;height:46vw;left:-8vw;top:-10vw;background:#9cc46a;animation:drift 22s ease-in-out infinite alternate}
+.aurora i:nth-child(2){width:38vw;height:38vw;right:-6vw;top:20vh;background:#2b4a1f;opacity:.45;animation:drift 28s ease-in-out infinite alternate-reverse}
+.aurora i:nth-child(3){width:34vw;height:34vw;left:30vw;bottom:-14vw;background:#e6d9a8;animation:drift 25s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(6vw,4vh,0) scale(1.12)}}
+
+main{max-width:1180px;margin:0 auto;padding:72px 24px 120px}
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(2rem,4.5vw,3.2rem);color:var(--forest);letter-spacing:-.02em;max-width:18ch}
+.lead{margin:12px 0 40px;color:#4d5c44;max-width:52ch}
+.grid{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:start}
+.stack{display:grid;gap:22px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+/* IDEA 2: frosted card with a specular edge that follows the cursor */
+.glass{--mx:50%;--my:0%;position:relative;border-radius:28px;padding:32px;
+  background:var(--glass);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 24px 60px -24px rgba(43,74,31,.35);isolation:isolate}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:radial-gradient(260px circle at var(--mx) var(--my),#fff,transparent 65%),linear-gradient(160deg,rgba(255,255,255,.7),rgba(255,255,255,.08));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+/* IDEA 3: soft spotlight inside the glass that tracks the pointer */
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .3s;
+  background:radial-gradient(380px circle at var(--mx) var(--my),rgba(255,255,255,.55),transparent 70%)}
+.glass:hover::after{opacity:1}
+
+h2{font-family:var(--serif);font-weight:700;color:var(--forest);font-size:1.45rem;display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.step{width:32px;height:32px;border-radius:50%;background:var(--forest);color:#fff;font:600 .9rem var(--sans);display:grid;place-items:center;flex:none}
+.sub{color:#5b6a51;margin-bottom:18px}
+.block+.block{margin-top:34px}
+
+/* IDEA 4: service chips are glass pills that fill with light when chosen */
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{position:relative;cursor:pointer;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.35);
+  backdrop-filter:blur(8px);border-radius:999px;padding:12px 20px;font:500 .98rem var(--sans);color:var(--ink);
+  transition:transform .25s cubic-bezier(.3,1.6,.5,1),background .25s,color .25s,box-shadow .25s}
+.chip:hover{transform:translateY(-2px)}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:var(--forest);color:#fff;box-shadow:0 10px 24px -8px rgba(43,74,31,.6),0 0 0 4px rgba(111,154,74,.25)}
+.chip[aria-pressed="true"]::after{content:"✓";margin-left:8px;font-size:.85em}
+
+/* IDEA 5: budget as a segmented glass control with a sliding thumb */
+.seg{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding:5px;border-radius:999px;
+  background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.7)}
+.seg button{position:relative;z-index:1;border:0;background:none;cursor:pointer;padding:12px 6px;font:600 .92rem var(--sans);color:#4d5c44;transition:color .25s}
+.seg button[aria-checked="true"]{color:#fff}
+.thumb{position:absolute;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/4);border-radius:999px;background:var(--forest);
+  box-shadow:0 8px 20px -6px rgba(43,74,31,.6);transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+@media(max-width:560px){.seg{grid-template-columns:1fr 1fr;border-radius:22px}.thumb{display:none}.seg button[aria-checked="true"]{background:var(--forest);border-radius:999px}}
+
+/* form fields: glass inset wells that glow on focus */
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fields .full{grid-column:1/-1}
+@media(max-width:560px){.fields{grid-template-columns:1fr}}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+input,textarea{width:100%;font:inherit;color:var(--ink);padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.75);
+  background:rgba(255,255,255,.45);box-shadow:inset 0 2px 6px rgba(43,74,31,.08);outline:0;transition:box-shadow .25s,background .25s}
+input:focus,textarea:focus{background:rgba(255,255,255,.75);box-shadow:inset 0 2px 6px rgba(43,74,31,.06),0 0 0 4px rgba(111,154,74,.3)}
+textarea{min-height:110px;resize:vertical}
+
+/* IDEA 6: primary button with a sheen that sweeps across on hover */
+.send{margin-top:22px;position:relative;overflow:hidden;border:0;cursor:pointer;border-radius:999px;padding:16px 30px;
+  background:var(--forest);color:#fff;font:600 1rem var(--sans);box-shadow:0 14px 30px -12px rgba(43,74,31,.7);transition:transform .25s}
+.send:hover{transform:translateY(-2px)}
+.send::after{content:"";position:absolute;top:0;bottom:0;width:60%;left:-80%;transform:skewX(-20deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transition:left .7s}
+.send:hover::after{left:130%}
+
+/* IDEA 7: email card where the copy button morphs into a confirmation */
+.mail{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 14px 14px 18px;border-radius:18px;
+  background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.75);font-weight:500}
+.copy{border:0;cursor:pointer;border-radius:12px;padding:10px 16px;background:var(--forest);color:#fff;font:600 .9rem var(--sans);
+  min-width:112px;transition:background .3s,transform .25s cubic-bezier(.3,1.6,.5,1)}
+.copy:active{transform:scale(.94)}
+.copy.done{background:var(--moss)}
+
+/* IDEA 8: availability pill with a live pulse and a real clock */
+.live{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(156,196,106,.35);color:#3d6a22;font-weight:600;font-size:.92rem}
+.live b{width:8px;height:8px;border-radius:50%;background:#5aa02c;position:relative}
+.live b::after{content:"";position:absolute;inset:0;border-radius:50%;background:inherit;animation:ping 1.8s ease-out infinite}
+@keyframes ping{to{transform:scale(3.2);opacity:0}}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(43,74,31,.25)}
+
+/* IDEA 9: social links that lean toward the cursor (magnetic) */
+.soc{display:flex;flex-wrap:wrap;gap:10px}
+.soc a{display:inline-block;text-decoration:none;color:var(--ink);font-weight:500;padding:11px 18px;border-radius:999px;
+  background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.75);transition:transform .2s ease-out,background .25s,color .25s;will-change:transform}
+.soc a:hover{background:var(--forest);color:#fff}
+
+/* IDEA 10: floating glass dock for the nav, blurred over the page */
+.dock{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:8px;border-radius:999px;
+  background:rgba(29,42,23,.55);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+  border:1px solid rgba(255,255,255,.18);box-shadow:0 20px 50px -16px rgba(0,0,0,.5);z-index:10}
+.dock a{color:#e8efe0;text-decoration:none;padding:10px 16px;border-radius:999px;font-weight:500;font-size:.95rem;transition:background .25s}
+.dock a:hover{background:rgba(255,255,255,.14)}
+.dock a.cta{background:#fff;color:var(--ink);font-weight:600}
+@media(max-width:560px){.dock a:not(.cta):nth-child(n+3){display:none}}
+
+/* idea notes, hand these to the agent */
+.notes{margin-top:56px;padding:28px 32px;border-radius:24px}
+.notes h3{font-family:var(--serif);color:var(--forest);margin-bottom:12px}
+.notes ol{padding-left:20px;display:grid;gap:6px;font-size:.95rem}
+.notes b{color:var(--forest)}
+
+:focus-visible{outline:3px solid var(--moss);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<main>
+  <h1>Tell me about your project</h1>
+  <p class="lead">Pick what you need, set a range, and send the details. Replies usually arrive within one working day.</p>
+
+  <div class="grid">
+    <section class="glass" aria-labelledby="f">
+      <div class="block">
+        <h2 id="f"><span class="step">1</span>What services do you need?</h2>
+        <p class="sub">Select all that apply.</p>
+        <div class="chips" id="chips">
+          <button class="chip" aria-pressed="false">Brand Identity &amp; Strategy</button>
+          <button class="chip" aria-pressed="false">Packaging &amp; Print</button>
+          <button class="chip" aria-pressed="false">Digital &amp; Web Design</button>
+          <button class="chip" aria-pressed="false">Custom Illustration</button>
+          <button class="chip" aria-pressed="false">Motion Graphics</button>
+          <button class="chip" aria-pressed="false">Complete Rebrand</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2><span class="step">2</span>Expected budget</h2>
+        <p class="sub">Helps me scope the proposal.</p>
+        <div class="seg" id="seg" role="radiogroup" aria-label="Budget range">
+          <span class="thumb" id="thumb"></span>
+          <button role="radio" aria-checked="true">$2k – $5k</button>
+          <button role="radio" aria-checked="false">$5k – $10k</button>
+          <button role="radio" aria-checked="false">$10k – $20k+</button>
+          <button role="radio" aria-checked="false">Flexible</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2><span class="step">3</span>Project details</h2>
+        <p class="sub">A few lines is plenty.</p>
+        <div class="fields">
+          <div><label for="n">Your name</label><input id="n" placeholder="e.g. Sarah Jenkins"></div>
+          <div><label for="e">Email address</label><input id="e" type="email" placeholder="you@company.com"></div>
+          <div class="full"><label for="m">What are you building?</label><textarea id="m" placeholder="Goals, timeline, anything that helps"></textarea></div>
+        </div>
+        <button class="send" type="button">Send project details</button>
+      </div>
+    </section>
+
+    <aside class="stack">
+      <div class="glass">
+        <h2>Direct email</h2>
+        <p class="sub">Prefer your own mail app? Copy my address.</p>
+        <div class="mail"><span>sadiaa.creativestudio@gmail.com</span><button class="copy" id="copy">Copy email</button></div>
+      </div>
+
+      <div class="glass">
+        <h2>Location &amp; availability</h2>
+        <p class="sub">Working with clients worldwide across North America, Europe, and Asia.</p>
+        <div class="row"><span>Available worldwide, remote</span><span class="live"><b></b><span id="clock">--:--:-- UTC</span></span></div>
+      </div>
+
+      <div class="glass">
+        <h2>Connect &amp; socials</h2>
+        <p class="sub">Process shots and design thoughts.</p>
+        <div class="soc"><a href="#">LinkedIn</a><a href="#">Behance</a><a href="#">Email</a></div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="glass notes" aria-label="Idea notes">
+    <h3>The 10 ideas used here</h3>
+    <ol>
+      <li><b>Aurora backdrop:</b> three slow blurred green blobs behind everything, so the glass has colour to refract.</li>
+      <li><b>Specular edge:</b> a 1px white highlight on each card border that follows the cursor.</li>
+      <li><b>Inner spotlight:</b> a soft light pool inside the card that tracks the pointer on hover.</li>
+      <li><b>Glass service chips:</b> frosted pills that fill forest green with a check and a soft halo when selected.</li>
+      <li><b>Sliding budget control:</b> one segmented glass track with a spring-eased thumb instead of four separate buttons.</li>
+      <li><b>Sheen button:</b> a diagonal light sweep across the send button on hover.</li>
+      <li><b>Copy-to-confirm:</b> the Copy email button turns into "Copied" and recolours for two seconds.</li>
+      <li><b>Live availability pill:</b> pulsing green dot and a real UTC clock ticking every second.</li>
+      <li><b>Magnetic socials:</b> links drift a few pixels toward the cursor and fill green.</li>
+      <li><b>Floating glass dock:</b> a dark translucent nav at the bottom that blurs whatever scrolls under it.</li>
+    </ol>
+  </section>
+</main>
+
+<nav class="dock" aria-label="Main">
+  <a href="#">Work</a><a href="#">Services</a><a href="#">About</a><a href="#">Contact</a><a class="cta" href="#">Let's talk</a>
+</nav>
+
+<script>
+// ideas 2 + 3: feed pointer position to every glass card
+document.querySelectorAll('.glass').forEach(el=>{
+  el.addEventListener('pointermove',e=>{
+    const r=el.getBoundingClientRect();
+    el.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    el.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+// idea 4: multi-select chips
+document.getElementById('chips').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b) return;
+  b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');
+});
+// idea 5: sliding thumb
+const btns=[...document.querySelectorAll('#seg button')],thumb=document.getElementById('thumb');
+btns.forEach((b,i)=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.setAttribute('aria-checked','false'));
+  b.setAttribute('aria-checked','true');
+  thumb.style.transform=`translateX(${i*100}%)`;
+}));
+// idea 7: copy confirmation
+const copy=document.getElementById('copy');
+copy.addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText('sadiaa.creativestudio@gmail.com');}catch(_){}
+  copy.textContent='Copied';copy.classList.add('done');
+  setTimeout(()=>{copy.textContent='Copy email';copy.classList.remove('done');},2000);
+});
+// idea 8: live UTC clock
+const clock=document.getElementById('clock');
+const tick=()=>clock.textContent=new Date().toISOString().slice(11,19)+' UTC';
+tick();setInterval(tick,1000);
+// idea 9: magnetic socials
+document.querySelectorAll('.soc a').forEach(a=>{
+  a.addEventListener('pointermove',e=>{
+    const r=a.getBoundingClientRect();
+    a.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`;
+  });
+  a.addEventListener('pointerleave',()=>a.style.transform='');
+});
+</script>
+</body>
+</html>

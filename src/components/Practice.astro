@@ -1,0 +1,448 @@
+---
+import '../styles/practice.css';
+---
+
+<section id="services" class="practice-section" aria-label="My Design Practice">
+  <div class="practice-container">
+    
+    <!-- SVG paths for the main circle and 3 outer rings (Desktop) -->
+    <svg class="practice-circle-svg" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid meet">
+      <!-- Center dashed circle -->
+      <path class="practice-arc arc-center-dashed" d="M 600 350 A 250 250 0 1 1 600 850 A 250 250 0 1 1 600 350" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="8 8" opacity="0.6" />
+
+      <!-- Main inner circle -->
+      <path class="practice-arc arc-main" d="M 600 200 A 400 400 0 1 1 600 1000 A 400 400 0 1 1 600 200" fill="none" stroke="currentColor" stroke-width="1.5" />
+      
+      <!-- Outer ring 1 -->
+      <path class="practice-arc arc-outer-1" d="M 600 150 A 450 450 0 1 1 600 1050 A 450 450 0 1 1 600 150" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="10 10" opacity="0.6" />
+      
+      <!-- Outer ring 2 -->
+      <path class="practice-arc arc-outer-2" d="M 600 100 A 500 500 0 1 1 600 1100 A 500 500 0 1 1 600 100" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.4" />
+      
+      <!-- Outer ring 3 -->
+      <path class="practice-arc arc-outer-3" d="M 600 50 A 550 550 0 1 1 600 1150 A 550 550 0 1 1 600 50" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="20 5" opacity="0.3" />
+    </svg>
+
+    <!-- Background travel lines (Desktop) -->
+    <svg class="practice-travel-svg" viewBox="0 0 1400 1200" preserveAspectRatio="xMidYMid meet">
+      <!-- Left side -->
+      <circle class="practice-travel-dot dot-left-start" cx="25" cy="1240" r="14" fill="#37481A" />
+      <path
+        class="practice-travel-line line-left"
+        d="M 25 1240 Q 65 1180, 25 1120 T 25 1000 T 25 880 T 25 760 T 25 640 T 25 520 T 25 400 T 25 280 T 25 160 T 25 40 T 25 -80 T 25 -200 T 25 -320 T 25 -440 T 25 -560 T 25 -680 T 25 -800"
+        fill="none"
+        stroke="#37481A"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <circle class="practice-travel-dot dot-left-end" cx="25" cy="-800" r="14" fill="#37481A" />
+      
+      <!-- Right side -->
+      <circle class="practice-travel-dot dot-right-start" cx="1375" cy="-800" r="14" fill="#37481A" />
+      <path
+        class="practice-travel-line line-right"
+        d="M 1375 -800 Q 1335 -740, 1375 -680 T 1375 -560 T 1375 -440 T 1375 -320 T 1375 -200 T 1375 -80 T 1375 40 T 1375 160 T 1375 280 T 1375 400 T 1375 520 T 1375 640 T 1375 760 T 1375 880 T 1375 1000 T 1375 1120 T 1375 1240"
+        fill="none"
+        stroke="#37481A"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <circle class="practice-travel-dot dot-right-end" cx="1375" cy="1240" r="14" fill="#37481A" />
+    </svg>
+
+    <!-- Center Text (Desktop) -->
+    <div class="practice-center-text">
+      <h2 class="split-chars">My design<br>practice</h2>
+    </div>
+
+    <!-- Mask & Blobs (Desktop) -->
+    <div class="inner-circle-mask">
+      <div class="practice-blob blob-1">
+        <div class="blob-bg bg-green"></div>
+        <span class="blob-text">UI/UX</span>
+      </div>
+
+      <div class="practice-blob blob-2">
+        <div class="blob-bg bg-orange"></div>
+        <span class="blob-text">Visual<br>design</span>
+      </div>
+
+      <div class="practice-blob blob-3">
+        <div class="blob-bg bg-blue"></div>
+        <span class="blob-text">Interaction<br>design</span>
+      </div>
+
+      <div class="practice-blob blob-4">
+        <div class="blob-bg bg-yellow"></div>
+        <span class="blob-text">Branding</span>
+      </div>
+    </div>
+
+    <!-- MOBILE: SPINE TIMELINE SCENE -->
+    <div class="mobile-scene" id="mobileScene">
+      <div class="m-head">
+        <h2 class="m-title">My design<br>practice</h2>
+        <p class="m-sub">scroll through the practice</p>
+      </div>
+      <div class="timeline">
+        <svg class="spine-svg" id="spineSvg" viewBox="0 0 40 900" preserveAspectRatio="none">
+          <path d="M20,0 Q5,28 20,56 Q35,84 20,112 Q5,140 20,168 Q35,196 20,224 Q5,252 20,280 Q35,308 20,336 Q5,364 20,392 Q35,420 20,448 Q5,476 20,504 Q35,532 20,560 Q5,588 20,616 Q35,644 20,672 Q5,700 20,728 Q35,756 20,784 Q5,812 20,840 Q35,868 20,900"/>
+        </svg>
+        <div class="node blue">
+          <div class="blob-card"></div>
+          <div class="txt">
+            <span class="m-dot"></span>
+            <span class="txt-content">Interaction design</span>
+          </div>
+        </div>
+        <div class="node green">
+          <div class="blob-card"></div>
+          <div class="txt">
+            <span class="m-dot"></span>
+            <span class="txt-content">UI/UX</span>
+          </div>
+        </div>
+        <div class="node yellow">
+          <div class="blob-card"></div>
+          <div class="txt">
+            <span class="m-dot"></span>
+            <span class="txt-content">Branding</span>
+          </div>
+        </div>
+        <div class="node coral">
+          <div class="blob-card"></div>
+          <div class="txt">
+            <span class="m-dot"></span>
+            <span class="txt-content">Visual design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Scroll spacer: Desktop only -->
+<div class="practice-scroll-spacer" aria-hidden="true"></div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initPracticeAnimations() {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    if (isMobile) {
+      initMobileSpine();
+    } else {
+      initDesktopPractice();
+    }
+  }
+
+  function initMobileSpine() {
+    const mobileScene = document.getElementById('mobileScene');
+    if (!mobileScene) return;
+
+    gsap.to('.m-title', {
+      opacity: 1,
+      y: 0,
+      duration: 0.9,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.m-head',
+        start: 'top 85%',
+      }
+    });
+
+    gsap.to('.m-sub', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.m-head',
+        start: 'top 85%',
+      }
+    });
+
+    // Split text for node labels into letter-by-letter spans
+    document.querySelectorAll('.node').forEach((node) => {
+      const txtContent = node.querySelector('.txt-content');
+      if (txtContent && !txtContent.getAttribute('data-split-done')) {
+        txtContent.setAttribute('data-split-done', 'true');
+        const text = txtContent.textContent || '';
+        const splitHTML = text.split('').map(char => {
+          if (char === ' ') return '&nbsp;';
+          return `<span class="spine-char" style="display:inline-block; opacity:0; transform:translateY(16px) scale(0.85);">${char}</span>`;
+        }).join('');
+        txtContent.innerHTML = splitHTML;
+      }
+    });
+
+    const spinePath = document.querySelector('.spine-svg path') as SVGPathElement | null;
+    if (spinePath) {
+      const len = spinePath.getTotalLength() || 1200;
+      spinePath.style.strokeDasharray = String(len);
+      spinePath.style.strokeDashoffset = String(len);
+
+      gsap.to(spinePath, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.timeline',
+          start: 'top 75%',
+          end: 'bottom 85%',
+          scrub: 0.6,
+        }
+      });
+    }
+
+    document.querySelectorAll('.node').forEach((node, i) => {
+      // 1. Reveal node container
+      gsap.to(node, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: node,
+          start: 'top 85%',
+        }
+      });
+
+      // 2. Reveal dot
+      const dot = node.querySelector('.m-dot');
+      if (dot) {
+        gsap.to(dot, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: 'back.out(3)',
+          scrollTrigger: {
+            trigger: node,
+            start: 'top 85%',
+          }
+        });
+      }
+
+      // 3. Staggered letter-by-letter character animation as node enters
+      const chars = node.querySelectorAll('.spine-char');
+      if (chars.length) {
+        gsap.to(chars, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.035,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: node,
+            start: 'top 83%',
+          }
+        });
+      }
+
+      // 4. Floating animation for blob card
+      const blobCard = node.querySelector('.blob-card');
+      if (blobCard) {
+        gsap.to(blobCard, {
+          y: i % 2 === 0 ? -12 : 12,
+          duration: 3.6 + i * 0.3,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: i * 0.2,
+        });
+      }
+    });
+  }
+
+  function initDesktopPractice() {
+    // Hero exit animation (blur and move out)
+    const heroSection = document.querySelector('.page-hero');
+    const heroElements = document.querySelectorAll('.hero-center, .hero-decorative');
+    
+    if (heroSection && heroElements.length) {
+      gsap.to(heroElements, {
+        y: -120,
+        opacity: 0,
+        scale: 0.92,
+        ease: 'power2.inOut',
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        }
+      });
+    }
+
+    // Practice section desktop scroll animations
+    const practiceSection = document.querySelector('.practice-section');
+    if (!practiceSection) return;
+
+    // Circle arcs
+    const centerDashedArc = document.querySelector('.arc-center-dashed') as SVGPathElement | null;
+    const mainArc = document.querySelector('.arc-main') as SVGPathElement | null;
+    const outerArc2 = document.querySelector('.arc-outer-2') as SVGPathElement | null;
+    const dashedArc1 = document.querySelector('.arc-outer-1') as SVGPathElement | null;
+    const dashedArc3 = document.querySelector('.arc-outer-3') as SVGPathElement | null;
+
+    if (centerDashedArc) {
+      gsap.set(centerDashedArc, { transformOrigin: '600px 600px', opacity: 0, scale: 0.85 });
+    }
+    if (mainArc) {
+      const len = mainArc.getTotalLength() || 2513;
+      gsap.set(mainArc, { strokeDasharray: len, strokeDashoffset: len });
+    }
+    if (outerArc2) {
+      const len = outerArc2.getTotalLength() || 3141;
+      gsap.set(outerArc2, { strokeDasharray: len, strokeDashoffset: len });
+    }
+    if (dashedArc1) {
+      gsap.set(dashedArc1, { transformOrigin: '600px 600px', opacity: 0 });
+    }
+    if (dashedArc3) {
+      gsap.set(dashedArc3, { transformOrigin: '600px 600px', opacity: 0 });
+    }
+
+    // Travel lines & dots animation
+    const travelDotsStart = document.querySelectorAll('.dot-left-start, .dot-right-start');
+    const travelDotsEnd = document.querySelectorAll('.dot-left-end, .dot-right-end');
+    const travelLines = document.querySelectorAll('.practice-travel-line');
+
+    gsap.set(travelDotsStart, { scale: 0, transformOrigin: 'center' });
+    gsap.set(travelDotsEnd, { scale: 0, transformOrigin: 'center' });
+
+    travelLines.forEach((line) => {
+      const len = (line as SVGPathElement).getTotalLength() || 2400;
+      gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
+
+      gsap.to(line, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: practiceSection,
+          start: 'top 95%',
+          end: 'top top',
+          scrub: 1,
+        }
+      });
+    });
+
+    gsap.to(travelDotsStart, {
+      scale: 1,
+      duration: 0.4,
+      stagger: 0.1,
+      ease: 'back.out(2)',
+      scrollTrigger: {
+        trigger: practiceSection,
+        start: 'top 95%',
+        toggleActions: 'play reverse play reverse',
+      }
+    });
+
+    gsap.to(travelDotsEnd, {
+      scale: 1,
+      duration: 0.4,
+      stagger: 0.1,
+      ease: 'back.out(2)',
+      scrollTrigger: {
+        trigger: practiceSection,
+        start: 'top 20%',
+        toggleActions: 'play reverse play reverse',
+      }
+    });
+
+    // Blobs
+    const blobs = document.querySelectorAll('.practice-blob');
+    gsap.set(blobs, { scale: 0, opacity: 0 });
+
+    // Center text split into chars
+    const centerText = document.querySelector('.practice-center-text .split-chars');
+    let chars: NodeListOf<HTMLSpanElement> | null = null;
+    if (centerText && !centerText.getAttribute('data-split-done')) {
+      centerText.setAttribute('data-split-done', 'true');
+      const text = centerText.innerHTML;
+      const splitHTML = text.split(/<br\s*\/?>/).map(line => {
+        return line.split('').map(char => {
+          if (char === ' ') return '&nbsp;';
+          return `<span style="display:inline-block; opacity:0; transform:translateY(30px);">${char}</span>`;
+        }).join('');
+      }).join('<br>');
+      centerText.innerHTML = splitHTML;
+    }
+    if (centerText) {
+      chars = centerText.querySelectorAll('span');
+    }
+
+    const processSection = document.querySelector('.process-section');
+
+    ScrollTrigger.create({
+      trigger: practiceSection,
+      start: 'top top',
+      endTrigger: processSection || '.process-section',
+      end: 'top top',
+      pin: true,
+      pinSpacing: false,
+      anticipatePin: 1,
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: practiceSection,
+        start: 'top top',
+        end: () => '+=' + window.innerHeight,
+        scrub: 1,
+      }
+    });
+
+    if (centerDashedArc) {
+      tl.to(centerDashedArc, { opacity: 0.65, scale: 1, rotation: -90, duration: 1.4, ease: 'power2.out' }, 0.1);
+    }
+    if (mainArc) {
+      tl.to(mainArc, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out' }, 0.15);
+    }
+    if (outerArc2) {
+      tl.to(outerArc2, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out' }, 0.25);
+    }
+    if (dashedArc1) {
+      tl.to(dashedArc1, { opacity: 0.6, rotation: 90, duration: 1.5, ease: 'none' }, 0.15);
+    }
+    if (dashedArc3) {
+      tl.to(dashedArc3, { opacity: 0.35, rotation: -90, duration: 1.5, ease: 'none' }, 0.15);
+    }
+
+    tl.to(blobs, {
+      scale: 1,
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.12,
+      ease: 'back.out(1.6)',
+    }, 0.4);
+
+    if (chars && chars.length) {
+      tl.to(chars, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.02,
+        ease: 'power2.out',
+      }, 0.6);
+    }
+
+    ScrollTrigger.refresh();
+  }
+
+  // Safe initializers
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPracticeAnimations);
+  } else {
+    initPracticeAnimations();
+  }
+  document.addEventListener('astro:page-load', initPracticeAnimations);
+</script>

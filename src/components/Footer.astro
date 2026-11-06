@@ -1,0 +1,366 @@
+---
+/**
+ * Footer.astro
+ * Warm Editorial Footer with Interactive Matter.js Physics Arena.
+ * Features dropping & collidable shapes (Circle, Flower, Cube, Rounded Cube, Cylinder)
+ * that flash/change colors on collision and support drag-and-drop.
+ */
+import '../styles/footer.css';
+import { socialLinks, siteConfig } from '../data/portfolio';
+---
+
+<footer class="footer" id="footer">
+  <div class="footer-container">
+    
+    <!-- ─── Interactive Physics CTA Arena ───────────────────── -->
+    <div class="footer-cta-card" id="footer-cta-card">
+      <!-- Background Physics Canvas -->
+      <canvas id="physics-canvas" class="physics-canvas"></canvas>
+
+      <!-- Foreground Text & CTA Button -->
+      <div class="footer-cta-content">
+        <span class="footer-cta-badge">
+          <span class="footer-cta-badge-dot"></span>
+          Ready to Create?
+        </span>
+        <h2 class="footer-cta-title">
+          Let's bring your <em>vision</em> to life.
+        </h2>
+        <a href="/contact" class="footer-cta-btn">
+          Start a Project
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.75 9H14.25M14.25 9L9.75 4.5M14.25 9L9.75 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Physics Hint Badge -->
+      <span class="physics-hint">✦ Drag &amp; toss shapes</span>
+    </div>
+
+    <!-- ─── Bottom Footer Bar ─────────────────────────────── -->
+    <div class="footer-bottom">
+      <div class="footer-brand">
+        <a href="/" class="footer-brand-name">{siteConfig.name}</a>
+        <span class="footer-brand-role">Graphic Designer &amp; Visual Storyteller</span>
+      </div>
+
+      <div class="footer-socials">
+        {socialLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-social-link"
+            aria-label={`Follow on ${link.platform}`}
+          >
+            {link.platform}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="footer-copy">
+      &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  import Matter from 'matter-js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('footer-cta-card');
+    const canvas = document.getElementById('physics-canvas') as HTMLCanvasElement;
+    if (!card || !canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Matter modules
+    const { Engine, Bodies, Composite, Mouse, MouseConstraint, Events, Body, Vector } = Matter;
+
+    let engine: Matter.Engine;
+    let width = card.clientWidth;
+    let height = card.clientHeight;
+
+    // Boundaries
+    const ground = Bodies.rectangle(width / 2, height + 40, width * 3, 80, { isStatic: true, friction: 0.5 });
+    const wallLeft = Bodies.rectangle(-40, height / 2, 80, height * 3, { isStatic: true });
+    const wallRight = Bodies.rectangle(width + 40, height / 2, 80, height * 3, { isStatic: true });
+
+    // Resize canvas & adjust physics boundaries
+    function resizeCanvas() {
+      if (!card || !canvas) return;
+      width = card.clientWidth;
+      height = card.clientHeight;
+      canvas.width = width;
+      canvas.height = height;
+      if (ground && wallLeft && wallRight) {
+        Body.setPosition(ground, { x: width / 2, y: height + 40 });
+        Body.setPosition(wallLeft, { x: -40, y: height / 2 });
+        Body.setPosition(wallRight, { x: width + 40, y: height / 2 });
+      }
+    }
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Create engine
+    engine = Engine.create();
+    engine.gravity.y = 1.1;
+
+    // Color Palette
+    const palette = [
+      '#92D68A', // Mint green
+      '#37481A', // Dark olive
+      '#B5DDF0', // Ice blue
+      '#F3EBC0', // Cream yellow
+      '#C86D51', // Terracotta
+      '#759D42', // Leaf green
+      '#172408', // Deep forest
+      '#E8A87C'  // Soft peach
+    ];
+
+    Composite.add(engine.world, [ground, wallLeft, wallRight]);
+
+    // Custom body type interface
+    interface CustomBody extends Matter.Body {
+      shapeType: 'circle' | 'flower' | 'cube' | 'roundedcube' | 'cylinder';
+      colorIndex: number;
+      flashVal: number;
+      shapeRadius?: number;
+      shapeW?: number;
+      shapeH?: number;
+    }
+
+    const bodiesList: CustomBody[] = [];
+
+    // Helper: Create individual shapes
+    function createShape(type: 'circle' | 'flower' | 'cube' | 'roundedcube' | 'cylinder', x: number, y: number): CustomBody {
+      let b: CustomBody;
+
+      if (type === 'circle') {
+        const r = 32 + Math.random() * 12;
+        b = Bodies.circle(x, y, r, { restitution: 0.78, friction: 0.1 }) as CustomBody;
+        b.shapeRadius = r;
+      } else if (type === 'flower') {
+        const r = 38 + Math.random() * 10;
+        b = Bodies.polygon(x, y, 6, r, { restitution: 0.75, friction: 0.15, chamfer: { radius: 10 } }) as CustomBody;
+        b.shapeRadius = r;
+      } else if (type === 'cube') {
+        const sz = 60 + Math.random() * 16;
+        b = Bodies.rectangle(x, y, sz, sz, { restitution: 0.7, friction: 0.2 }) as CustomBody;
+        b.shapeW = sz;
+        b.shapeH = sz;
+      } else if (type === 'roundedcube') {
+        const sz = 64 + Math.random() * 14;
+        b = Bodies.rectangle(x, y, sz, sz, { restitution: 0.75, friction: 0.15, chamfer: { radius: 16 } }) as CustomBody;
+        b.shapeW = sz;
+        b.shapeH = sz;
+      } else { // cylinder / pill
+        const w = 110 + Math.random() * 20;
+        const h = 46;
+        b = Bodies.rectangle(x, y, w, h, { restitution: 0.8, friction: 0.1, chamfer: { radius: h / 2 } }) as CustomBody;
+        b.shapeW = w;
+        b.shapeH = h;
+      }
+
+      b.shapeType = type;
+      b.colorIndex = Math.floor(Math.random() * palette.length);
+      b.flashVal = 0;
+
+      return b;
+    }
+
+    // Spawn 10 shapes above viewport for entrance drop
+    const shapeTypes: ('circle' | 'flower' | 'cube' | 'roundedcube' | 'cylinder')[] = [
+      'circle', 'flower', 'cube', 'roundedcube', 'cylinder',
+      'circle', 'flower', 'cube', 'roundedcube', 'cylinder'
+    ];
+
+    let spawned = false;
+
+    function spawnShapes() {
+      if (spawned) return;
+      spawned = true;
+
+      shapeTypes.forEach((type, idx) => {
+        const startX = (width * 0.1) + ((width * 0.8) / shapeTypes.length) * idx + (Math.random() * 20 - 10);
+        const startY = -80 - idx * 60; // Staggered drop from above
+
+        const body = createShape(type, startX, startY);
+        // Add random angular velocity
+        Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.15);
+        bodiesList.push(body);
+        Composite.add(engine.world, body);
+      });
+    }
+
+    let isVisible = false;
+    let animFrameId: number | null = null;
+
+    // IntersectionObserver to drop shapes and run physics only when section hits viewport
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          isVisible = true;
+          spawnShapes();
+          if (!animFrameId) {
+            animFrameId = requestAnimationFrame(renderLoop);
+          }
+        } else {
+          isVisible = false;
+          if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(card);
+
+    // ─── Collision Event: Flash & Color Change ─────────────────
+    Events.on(engine, 'collisionStart', (evt) => {
+      evt.pairs.forEach(pair => {
+        const bA = pair.bodyA as CustomBody;
+        const bB = pair.bodyB as CustomBody;
+
+        if (bA.shapeType) {
+          bA.colorIndex = (bA.colorIndex + 1) % palette.length;
+          bA.flashVal = 1.0;
+        }
+        if (bB.shapeType) {
+          bB.colorIndex = (bB.colorIndex + 1) % palette.length;
+          bB.flashVal = 1.0;
+        }
+      });
+    });
+
+    // ─── Mouse Drag & Drop ─────────────────────────────────────
+    const mouse = Mouse.create(canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: { visible: false }
+      }
+    });
+
+    // Remove scroll blocking from Matter mouse
+    // @ts-ignore
+    mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+    // @ts-ignore
+    mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
+
+    Composite.add(engine.world, mouseConstraint);
+
+    // ─── Custom Canvas Drawing Loop ─────────────────────────────
+    function drawFlower(c: CanvasRenderingContext2D, r: number) {
+      const petals = 6;
+      c.beginPath();
+      for (let i = 0; i < petals; i++) {
+        const angle = (i * 2 * Math.PI) / petals;
+        const px = Math.cos(angle) * (r * 0.6);
+        const py = Math.sin(angle) * (r * 0.6);
+        c.moveTo(px + r * 0.4, py);
+        c.arc(px, py, r * 0.45, 0, Math.PI * 2);
+      }
+      c.fill();
+      c.stroke();
+      c.beginPath();
+      c.arc(0, 0, r * 0.25, 0, Math.PI * 2);
+      c.fillStyle = '#FFFFFF';
+      c.fill();
+    }
+
+    function drawCapsule(c: CanvasRenderingContext2D, w: number, h: number) {
+      const r = h / 2;
+      c.beginPath();
+      c.roundRect(-w / 2, -h / 2, w, h, r);
+      c.fill();
+      c.stroke();
+    }
+
+    function drawRoundedRect(c: CanvasRenderingContext2D, w: number, h: number, r: number) {
+      c.beginPath();
+      c.roundRect(-w / 2, -h / 2, w, h, r);
+      c.fill();
+      c.stroke();
+    }
+
+    function renderLoop() {
+      if (!isVisible) {
+        animFrameId = null;
+        return;
+      }
+      animFrameId = requestAnimationFrame(renderLoop);
+
+      // Step physics engine
+      Engine.update(engine, 1000 / 60);
+
+      // Clear canvas
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw all physics bodies
+      bodiesList.forEach(b => {
+        ctx.save();
+        ctx.translate(b.position.x, b.position.y);
+        ctx.rotate(b.angle);
+
+        // Flash fading effect
+        if (b.flashVal > 0) {
+          b.flashVal -= 0.03;
+          if (b.flashVal < 0) b.flashVal = 0;
+        }
+
+        const baseColor = palette[b.colorIndex];
+        ctx.fillStyle = baseColor;
+        ctx.strokeStyle = b.flashVal > 0.1 ? '#FFFFFF' : 'rgba(23, 36, 8, 0.2)';
+        ctx.lineWidth = b.flashVal > 0.1 ? 3 + b.flashVal * 4 : 1.5;
+
+        // Shadow & glow
+        if (b.flashVal > 0.1) {
+          ctx.shadowColor = '#FFFFFF';
+          ctx.shadowBlur = 18 * b.flashVal;
+        } else {
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
+          ctx.shadowBlur = 10;
+          ctx.shadowOffsetY = 4;
+        }
+
+        // Draw according to shape type
+        if (b.shapeType === 'circle') {
+          const r = b.shapeRadius || 36;
+          ctx.beginPath();
+          ctx.arc(0, 0, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        } else if (b.shapeType === 'flower') {
+          drawFlower(ctx, b.shapeRadius || 40);
+        } else if (b.shapeType === 'cube') {
+          const w = b.shapeW || 60;
+          const h = b.shapeH || 60;
+          drawRoundedRect(ctx, w, h, 6);
+        } else if (b.shapeType === 'roundedcube') {
+          const w = b.shapeW || 64;
+          const h = b.shapeH || 64;
+          drawRoundedRect(ctx, w, h, 16);
+        } else if (b.shapeType === 'cylinder') {
+          const w = b.shapeW || 110;
+          const h = b.shapeH || 46;
+          drawCapsule(ctx, w, h);
+        }
+
+        ctx.restore();
+      });
+    }
+
+    // Clean up on page leave / unmount
+    window.addEventListener('beforeunload', () => {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+    });
+  });
+</script>

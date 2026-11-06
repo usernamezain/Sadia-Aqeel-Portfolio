@@ -1,0 +1,331 @@
+---
+import '../styles/dock.css';
+import { projects } from '../data/portfolio';
+
+// Dynamic categories with live project counts matching real portfolio items
+const categories = [
+  { filter: 'all', label: 'All', count: projects.length },
+  { filter: 'Brand Identity', label: 'Branding', count: projects.filter(p => p.category === 'Brand Identity').length },
+  { filter: 'Social Media', label: 'Social', count: projects.filter(p => p.category === 'Social Media').length },
+  { filter: 'Posters', label: 'Posters', count: projects.filter(p => p.category === 'Posters').length },
+  { filter: 'UI/UX & Figma', label: 'UI/UX', count: projects.filter(p => p.category === 'UI/UX & Figma').length },
+  { filter: 'Editorial & Books', label: 'Editorial', count: projects.filter(p => p.category === 'Editorial & Books').length },
+  { filter: 'Typography', label: 'Typography', count: projects.filter(p => p.category === 'Typography').length },
+];
+---
+
+<div class="dock-container">
+  <nav class="dock" aria-label="Primary" id="main-dock">
+    <div class="dock__bar">
+      <a class="dock__brand" href="/">
+        <span class="dock__mark" aria-hidden="true"></span>
+        <span class="dock__brand-text">Sadia</span>
+      </a>
+      
+      <ul class="dock__links">
+        <li><a href="/work">Work</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+      
+      <a class="dock__cta" href="/contact">Let's talk</a>
+      
+      <button class="dock__toggle" aria-expanded="false" aria-controls="dock-panel" aria-label="Show projects"></button>
+    </div>
+
+    <div class="dock__panel" id="dock-panel">
+      <!-- Category Filter Chips -->
+      <div class="chips" role="tablist" aria-label="Project categories">
+        {categories.map((cat, i) => (
+          <button
+            class={`chip ${i === 0 ? 'is-active' : ''}`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-filter={cat.filter}
+          >
+            {cat.label} <span>{cat.count}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Marquee Carousel Track with Real Work Images -->
+      <div class="carousel" id="dock-carousel" tabindex="0" aria-label="Projects showcase — drag or scroll horizontally">
+        <ul class="carousel__track" id="carousel-track">
+          <!-- Primary Track with Real Portfolio Assets -->
+          {projects.map((project) => (
+            <li class="card" data-cat={project.category} data-id={project.id}>
+              <a href={`/work#${project.id}`} aria-label={`${project.title} — ${project.category}`}>
+                <img
+                  data-src={project.thumbnail}
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 130'%3E%3Crect fill='%231f2416' width='200' height='130'/%3E%3C/svg%3E"
+                  alt={project.title}
+                  width="200"
+                  height="130"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="card__meta">
+                  <strong class="card__title">{project.title.split('—')[0].trim()}</strong>
+                  <span class="card__category">{project.category}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+
+          <!-- Duplicated track for seamless infinite marquee loop -->
+          {projects.map((project) => (
+            <li class="card" data-cat={project.category} data-id={project.id} aria-hidden="true">
+              <a href={`/work#${project.id}`} tabindex="-1" aria-hidden="true">
+                <img
+                  data-src={project.thumbnail}
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 130'%3E%3Crect fill='%231f2416' width='200' height='130'/%3E%3C/svg%3E"
+                  alt=""
+                  width="200"
+                  height="130"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="card__meta">
+                  <strong class="card__title">{project.title.split('—')[0].trim()}</strong>
+                  <span class="card__category">{project.category}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // ─── dock panel ───
+  document.addEventListener('DOMContentLoaded', () => {
+    const dock = document.querySelector('.dock');
+    const toggle = document.querySelector('.dock__toggle');
+    const panel = document.getElementById('dock-panel');
+    const chips = document.querySelectorAll('.chip');
+    const carousel = document.getElementById('dock-carousel');
+    const track = document.getElementById('carousel-track') as HTMLElement;
+    const cards = document.querySelectorAll('.carousel__track .card');
+    
+    if (!dock || !panel || !track) return;
+
+    // ─── Lazy Load Carousel Images (Zero impact on first load) ───
+    let dockImagesLoaded = false;
+    function loadDockImages() {
+      if (dockImagesLoaded) return;
+      dockImagesLoaded = true;
+      const imgs = document.querySelectorAll<HTMLImageElement>('#carousel-track img[data-src]');
+      imgs.forEach((img) => {
+        const ds = img.getAttribute('data-src');
+        if (ds) {
+          img.src = ds;
+          img.removeAttribute('data-src');
+        }
+      });
+    }
+
+    // Trigger load on user interaction or when idle
+    dock.addEventListener('pointerenter', loadDockImages, { once: true });
+    dock.addEventListener('focusin', loadDockImages, { once: true });
+    if (toggle) toggle.addEventListener('click', loadDockImages, { once: true });
+
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => setTimeout(loadDockImages, 1800));
+    } else {
+      setTimeout(loadDockImages, 2500);
+    }
+
+    let openT: ReturnType<typeof setTimeout>, closeT: ReturnType<typeof setTimeout>;
+    const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches;
+
+    const setOpen = (open: boolean) => {
+      if (open) {
+        dock.classList.add('is-expanded');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+      } else {
+        dock.classList.remove('is-expanded');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    // Hover intent (desktop)
+    dock.addEventListener('pointerenter', (e) => {
+      if (!isDesktop() || e.pointerType !== 'mouse') return;
+      clearTimeout(closeT);
+      openT = setTimeout(() => setOpen(true), 80);
+    });
+
+    dock.addEventListener('pointerleave', (e) => {
+      if (!isDesktop() || e.pointerType !== 'mouse') return;
+      clearTimeout(openT);
+      closeT = setTimeout(() => setOpen(false), 200);
+    });
+
+    // Keyboard & Focus
+    dock.addEventListener('focusin', () => setOpen(true));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dock.classList.contains('is-expanded')) {
+        setOpen(false);
+        const firstLink = dock.querySelector('.dock__links a, .dock__cta');
+        if (firstLink) (firstLink as HTMLElement).focus();
+      }
+    });
+
+    // Close when focus leaves the dock
+    document.addEventListener('focusout', (e) => {
+      if (!dock.contains(e.relatedTarget as Node)) {
+        setOpen(false);
+      }
+    });
+
+    // Toggle button (tablet/mobile)
+    if (toggle) {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dock.classList.contains('is-expanded');
+        setOpen(!isOpen);
+      });
+    }
+
+    // Close on outside click (tablet/mobile)
+    document.addEventListener('click', (e) => {
+      if (!isDesktop() && !dock.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    });
+
+    // ─── Interactive Drag & Smooth Wheel Scrubbing ─────────
+    function getCurrentX(el: HTMLElement): number {
+      const style = window.getComputedStyle(el);
+      const matrix = style.transform || (style as any).webkitTransform;
+      if (matrix && matrix !== 'none') {
+        const values = matrix.split('(')[1].split(')')[0].split(',');
+        return parseFloat(values[4]) || 0;
+      }
+      return 0;
+    }
+
+    let isDown = false;
+    let startX = 0;
+    let initialX = 0;
+    let hasDragged = false;
+    let activeFilter = 'all';
+
+    if (carousel) {
+      carousel.addEventListener('pointerdown', (e: MouseEvent) => {
+        if (e.button !== 0) return;
+        isDown = true;
+        hasDragged = false;
+        startX = e.clientX;
+        initialX = getCurrentX(track);
+        track.style.animation = 'none';
+        track.style.transform = `translateX(${initialX}px)`;
+      });
+
+      window.addEventListener('pointermove', (e: MouseEvent) => {
+        if (!isDown) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 5) {
+          hasDragged = true;
+          track.style.transform = `translateX(${initialX + dx}px)`;
+        }
+      });
+
+      window.addEventListener('pointerup', () => {
+        if (!isDown) return;
+        isDown = false;
+        setTimeout(() => { hasDragged = false; }, 60);
+      });
+
+      // Mouse wheel horizontal scroll
+      carousel.addEventListener('wheel', (e: WheelEvent) => {
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        if (Math.abs(delta) > 2) {
+          const cur = getCurrentX(track);
+          track.style.animation = 'none';
+          track.style.transform = `translateX(${cur - delta * 0.9}px)`;
+        }
+      }, { passive: true });
+
+      // Handle project card clicks: close dock and open modal if on /work
+      track.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          if (hasDragged) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
+
+          // Always close dock when clicking a project item
+          setOpen(false);
+
+          const href = link.getAttribute('href') || '';
+          const isCurrentWorkPage = window.location.pathname.replace(/\/$/, '') === '/work';
+
+          if (isCurrentWorkPage && href.includes('#')) {
+            const targetId = href.split('#')[1];
+            if (targetId) {
+              e.preventDefault();
+              window.location.hash = '#' + targetId;
+              if ((window as any).openWorkModal) {
+                (window as any).openWorkModal(targetId);
+              }
+            }
+          }
+        });
+      });
+    }
+
+    // ─── Category Filtering ────────────────────────────────
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => {
+          c.classList.remove('is-active');
+          c.setAttribute('aria-selected', 'false');
+        });
+        chip.classList.add('is-active');
+        chip.setAttribute('aria-selected', 'true');
+
+        activeFilter = chip.getAttribute('data-filter') || 'all';
+
+        track.style.opacity = '0';
+        track.style.transition = 'opacity 180ms ease';
+
+        setTimeout(() => {
+          track.style.animation = 'none';
+          track.style.transform = 'translateX(0)';
+
+          if (activeFilter === 'all') {
+            cards.forEach(card => {
+              (card as HTMLElement).style.display = '';
+            });
+            // Re-apply marquee animation for full track
+            track.style.animation = '';
+          } else {
+            cards.forEach(card => {
+              const cat = card.getAttribute('data-cat');
+              const isDuplicate = card.getAttribute('aria-hidden') === 'true';
+              if (!isDuplicate && cat === activeFilter) {
+                (card as HTMLElement).style.display = '';
+              } else {
+                (card as HTMLElement).style.display = 'none';
+              }
+            });
+          }
+
+          track.style.opacity = '1';
+        }, 180);
+      });
+    });
+
+    // Close dock on link click
+    const navLinks = document.querySelectorAll('.dock__links a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        setOpen(false);
+      });
+    });
+  });
+</script>

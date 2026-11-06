@@ -1,0 +1,27 @@
+---
+/**
+ * Work Page — Portfolio Showcase
+ * Pinterest-style creative gallery matching homepage aesthetics.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkSection from '../components/WorkSection.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/hero.css';
+---
+
+<BaseLayout 
+  title="Portfolio & Selected Works — Sadia Aqeel Graphic Designer" 
+  description="Explore the creative portfolio of Sadia Aqeel. Featuring brand identities, high-converting social media carousels, restaurant & commercial posters, custom typography, and UI/UX design."
+>
+  <div style="padding-top: 4rem;">
+    <WorkSection />
+  </div>
+  <Footer />
+</BaseLayout>
+
+<style is:global>
+  body {
+    background-color: #F0EFEA;
+    color: #172408;
+  }
+</style>
