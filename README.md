@@ -1,43 +1,89 @@
-# Astro Starter Kit: Minimal
+# Sadia Aqeel — Senior Brand & Visual Identity Designer
 
-```sh
-npm create astro@latest -- --template minimal
+A bespoke, high-performance portfolio website built with **Astro 5**, **React**, **GSAP**, and **TypeScript**. Designed for high visual fidelity, seamless motion design, interactive swatches, and sub-second page performance.
+
+---
+
+## ✨ Features
+
+- **Custom Signature Preloader**: Vector path stroke drawing and responsive OpenType-calculated signature typography.
+- **Interactive Service Swatches**: Deck system with SVG chromatic displacement filter and dynamic depth tilt.
+- **Glassmorphism Contact Experience**: Real-time cursor-tracking specular border highlights, inner radial spotlight, segmented spring budget slider, and live UTC clock.
+- **Curated Case Studies & Gallery**: Categorized showcase for Brand Identity, Social Posts, Posters, Packaging, and UI/UX with responsive previews.
+- **Smooth Inertia Scrolling & Motion**: Integrated Lenis smooth scroll and GSAP timelines with `prefers-reduced-motion` compliance.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Astro 5](https://astro.build/)
+- **UI & Islands**: [React 19](https://react.dev/)
+- **Animation**: [GSAP](https://greensock.com/gsap/), [Lenis](https://github.com/darkroomengineering/lenis), [Anime.js](https://animejs.com/)
+- **Typography Engine**: [OpenType.js](https://opentype.js.org/)
+- **Styling**: Scoped CSS architecture, Glassmorphism, CSS Custom Properties
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** `>= 22.12.0`
+- **npm** or **pnpm**
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/usernamezain/Sadia-Aqeel-Portfolio.git
+
+# Navigate to directory
+cd Sadia-Aqeel-Portfolio
+
+# Install dependencies
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Development
 
-## 🚀 Project Structure
+```bash
+npm run dev
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+Open [http://localhost:4321](http://localhost:4321) to view the live development server.
+
+### Production Build
+
+```bash
+# Build static site output to /dist
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+---
+
+## 📁 Project Structure
 
 ```text
-/
-├── public/
+├── public/                 # Static assets, fonts, favicons & portfolio gallery
+│   ├── assets/             # Curated showcase images, process, & capsules
+│   └── fonts/              # Variable typography (Satoshi, ClashDisplay, Lastoria)
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── animations/         # Lenis smooth scroll, GSAP helpers & cursor logic
+│   ├── components/         # Astro & React interactive components (Preloader, Swatches, Dock, Nav)
+│   ├── data/               # Portfolio projects, client reviews & services data
+│   ├── layouts/            # BaseLayout with SEO & metadata
+│   ├── pages/              # Routing (index, work, services, about, contact, 404)
+│   ├── styles/             # Scoped stylesheets & global tokens
+│   └── utils/              # Performance monitors & SEO helpers
+├── astro.config.mjs
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 📄 License
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Private portfolio. All artwork, brand identities, and visual assets are copyright © Sadia Aqeel.
